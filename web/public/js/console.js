@@ -96,6 +96,7 @@ export async function renderConsole(root, summary, state, setState) {
       drawVerdict(verdict, res);
       drawChart(chartHost, readout, exp, scores, cfg, res, summary);
       drawTimeline(timelineHost, exp, res);
+      root.dataset.ready = "konsol";
     });
   };
 

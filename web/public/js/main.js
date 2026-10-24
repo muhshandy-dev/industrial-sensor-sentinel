@@ -42,6 +42,7 @@ function setState(patch) {
     if (v != null && v !== DEFAULTS[k]) q.set(k, String(v));
   }
   const qs = q.toString();
+  main.removeAttribute("data-ready");
   location.hash = `#/${view}${qs ? `?${qs}` : ""}`;
 }
 
@@ -73,6 +74,7 @@ async function render() {
   else if (view === "kinerja") renderPerformance(main, summary, state, setState);
   else if (view === "kesalahan") renderErrors(main, summary, state, setState);
   else renderMethod(main, summary);
+  if (view !== "konsol") main.dataset.ready = view;
 }
 
 let lastView = null;

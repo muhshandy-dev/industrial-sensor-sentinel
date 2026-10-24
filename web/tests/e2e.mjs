@@ -20,6 +20,10 @@ const browser = await chromium.launch();
 for (const width of WIDTHS) {
   const ctx = await browser.newContext({ viewport: { width, height: 900 }, colorScheme: "dark" });
   const page = await ctx.newPage();
+  if (process.env.CPU_THROTTLE) {
+    const cdp = await ctx.newCDPSession(page);
+    await cdp.send("Emulation.setCPUThrottlingRate", { rate: Number(process.env.CPU_THROTTLE) });
+  }
   const problems = [];
   page.on("console", (m) => { if (["error", "warning"].includes(m.type())) problems.push(`${m.type()}: ${m.text()}`); });
   page.on("pageerror", (e) => problems.push(`pageerror: ${e.message}`));
@@ -28,8 +32,7 @@ for (const width of WIDTHS) {
 
   for (const view of VIEWS) {
     await page.goto(`${base}/#/${view}`);
-    await page.waitForSelector("main h1");
-    if (view === "konsol") await page.waitForSelector("#verdict .stat");
+    await page.waitForSelector(`main[data-ready="${view}"] h1`);
     await page.waitForTimeout(150);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     ok(overflow <= 0, `${view} @${width}: geser horizontal ${overflow}px`);
@@ -46,18 +49,18 @@ for (const width of WIDTHS) {
 
   // Interaksi konsol
   await page.goto(`${base}/#/konsol`);
-  await page.waitForSelector("#verdict .stat");
+  await page.waitForSelector('main[data-ready="konsol"] #verdict .stat');
   const verdict = () => page.locator("#verdict").innerText();
   const before = await verdict();
   await page.selectOption("#pilih-eksperimen", { index: 1 });
   await page.waitForURL(/exp=/);
-  await page.waitForSelector("#verdict .stat");
+  await page.waitForSelector('main[data-ready="konsol"] #verdict .stat');
   ok(page.url().includes("exp="), `konsol @${width}: pilihan rekaman tidak masuk ke URL`);
   await page.getByRole("button", { name: "Isolation Forest", exact: true }).first().click();
-  await page.waitForSelector("#verdict .stat");
+  await page.waitForSelector('main[data-ready="konsol"] #verdict .stat');
   ok(page.url().includes("model=isolation_forest"), `konsol @${width}: model tidak berubah`);
   await page.getByRole("button", { name: "Hemat alarm", exact: true }).first().click();
-  await page.waitForSelector("#verdict .stat");
+  await page.waitForSelector('main[data-ready="konsol"] #verdict .stat');
   // Geser ambang ke maksimum: tidak boleh ada alarm sama sekali
   await page.locator("#sl-ambang").fill("1000");
   const manual = await page
@@ -88,7 +91,7 @@ for (const width of WIDTHS) {
 
   // Kinerja dan kesalahan: ganti skema dan model
   await page.goto(`${base}/#/kinerja`);
-  await page.waitForSelector("main h1");
+  await page.waitForSelector('main[data-ready="kinerja"] h1');
   await page.getByRole("button", { name: /Skema B/ }).click();
   await page.waitForFunction(() => document.querySelector("main caption")?.textContent.includes("Skema B"));
   await page.goto(`${base}/#/kesalahan`);
@@ -100,8 +103,7 @@ for (const width of WIDTHS) {
   await page.getByRole("button", { name: /Tema terang/ }).click();
   for (const view of VIEWS) {
     await page.goto(`${base}/#/${view}`);
-    await page.waitForSelector("main h1");
-    if (view === "konsol") await page.waitForSelector("#verdict .stat");
+    await page.waitForSelector(`main[data-ready="${view}"] h1`);
     await page.waitForTimeout(150);
     await page.screenshot({ path: join(OUT, `${view}-${width}-terang.png`), fullPage: true });
     if (width === 1440) {
