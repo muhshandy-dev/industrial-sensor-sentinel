@@ -68,7 +68,7 @@ def export_experiment(
                 "ambang": run.threshold,
                 "ketekunan_detik": run.persistence,
                 "tahan_detik": run.hold,
-                "skor": _round(np.clip(sc.score, -5, 1000), 5),
+                "skor": _round(sc.score, 5),
                 "episode_alarm": [list(map(int, ep)) for ep in episodes(alarm)],
             }
         models[model] = by_mode

@@ -5,6 +5,7 @@ import { renderConsole } from "./console.js";
 import { renderPerformance } from "./performance.js";
 import { renderErrors } from "./errors.js";
 import { renderMethod } from "./method.js";
+import { reveal, enter } from "./motion.js";
 
 const VIEWS = [
   { id: "ringkasan", label: "Ringkasan", icon: "M3 12l9-8 9 8M5 10v10h14V10" },
@@ -46,17 +47,50 @@ function setState(patch) {
   location.hash = `#/${view}${qs ? `?${qs}` : ""}`;
 }
 
-function buildMenu(active) {
+// Menu dibuat sekali. Indikator aktif bergeser ke tautan yang dipilih.
+const links = h("div", { class: "rail-links" });
+const indicator = h("span", { class: "rail-ind", "aria-hidden": "true" });
+function buildMenu() {
   clear(menu);
+  links.append(indicator);
   for (const v of VIEWS) {
     const icon = s("svg", { class: "ic", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": 1.8, "stroke-linecap": "round", "stroke-linejoin": "round", "aria-hidden": "true", focusable: "false" }, s("path", { d: v.icon }));
-    menu.append(h("a", { href: `#/${v.id}`, "aria-current": v.id === active ? "page" : null }, icon, v.label));
+    links.append(h("a", { href: `#/${v.id}`, "data-view": v.id }, icon, h("span", null, v.label)));
   }
+  menu.append(h("div", { class: "rail-inner" },
+    h("p", { class: "rail-head" }, "Navigasi"),
+    links,
+    h("div", { class: "rail-foot" }, h("strong", null, "Data SKAB"), h("br"), "Rig pompa air laboratorium. Hasil batch, bukan pemantauan langsung."),
+  ));
 }
+function markActive(active) {
+  let el = null;
+  for (const a of links.querySelectorAll("a")) {
+    const on = a.dataset.view === active;
+    if (on) { a.setAttribute("aria-current", "page"); el = a; } else a.removeAttribute("aria-current");
+  }
+  placeIndicator(el);
+}
+function placeIndicator(el) {
+  if (!el) return;
+  const horizontal = getComputedStyle(links).flexDirection === "row";
+  if (horizontal) {
+    indicator.style.width = `${el.offsetWidth}px`;
+    indicator.style.height = "";
+    indicator.style.transform = `translateX(${el.offsetLeft}px)`;
+  } else {
+    indicator.style.width = "";
+    indicator.style.height = `${el.offsetHeight}px`;
+    indicator.style.transform = `translateY(${el.offsetTop}px)`;
+  }
+  requestAnimationFrame(() => indicator.classList.add("ready"));
+}
+window.addEventListener("resize", () => placeIndicator(links.querySelector('[aria-current="page"]')));
+buildMenu();
 
 async function render() {
   const { view, state } = parseHash();
-  buildMenu(view);
+  markActive(view);
   if (cleanup) { cleanup(); cleanup = null; }
   if (!summary) {
     try {
@@ -71,17 +105,18 @@ async function render() {
   document.title = `${VIEWS.find((v) => v.id === view).label} | Industrial Sensor Sentinel`;
   if (view === "ringkasan") renderOverview(main, summary);
   else if (view === "konsol") cleanup = await renderConsole(main, summary, state, setState);
-  else if (view === "kinerja") renderPerformance(main, summary, state, setState);
+  else if (view === "kinerja") cleanup = renderPerformance(main, summary, state, setState);
   else if (view === "kesalahan") renderErrors(main, summary, state, setState);
   else renderMethod(main, summary);
   if (view !== "konsol") main.dataset.ready = view;
+  reveal(main);
 }
 
 let lastView = null;
 window.addEventListener("hashchange", async () => {
   const { view } = parseHash();
   await render();
-  if (view !== lastView) { main.focus({ preventScroll: true }); window.scrollTo(0, 0); }
+  if (view !== lastView) { main.focus({ preventScroll: true }); window.scrollTo(0, 0); enter(main); }
   lastView = view;
 });
 

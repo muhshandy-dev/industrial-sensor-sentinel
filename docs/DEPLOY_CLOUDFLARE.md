@@ -13,8 +13,8 @@ Website statis tanpa build. Yang dipublikasikan adalah folder `web/public`.
 
 ## Catatan
 
-- `web/public/_headers` memasang CSP ketat, `X-Frame-Options`, dan header keamanan lain. Tidak ada skrip atau gaya sebaris dan tidak ada permintaan ke pihak ketiga.
-- Berkas terbesar sekitar 120 KB, jauh di bawah batas 25 MiB per berkas.
+- `web/public/_headers` memasang CSP ketat, `X-Frame-Options`, dan header keamanan lain. Tidak ada skrip atau gaya sebaris dan tidak ada permintaan ke pihak ketiga. Font (Inter, Space Grotesk, JetBrains Mono, lisensi OFL, berkas lisensi ada di `web/public/fonts`) disajikan dari domain sendiri, jadi CSP hanya mengizinkan `font-src 'self'`.
+- Berkas terbesar sekitar 135 KB, jauh di bawah batas 25 MiB per berkas.
 - Situs statis tidak "tidur": tidak ada server yang perlu dinyalakan ulang.
 - Data website dibuat oleh `sentinel evaluate --web-out web/public/data` dan di-commit. Mengubah model berarti menjalankan ulang perintah itu lalu commit.
 - Header tambahan: `Strict-Transport-Security` (tanpa `includeSubDomains` dan tanpa preload), `Cross-Origin-Opener-Policy` dan `Cross-Origin-Resource-Policy` bernilai `same-origin`.

@@ -16,3 +16,7 @@ export function loadExperiment(entry) {
   if (!expCache.has(entry.berkas)) expCache.set(entry.berkas, getJson(`data/${entry.berkas}`));
   return expCache.get(entry.berkas);
 }
+
+export function loadAllExperiments(summary) {
+  return Promise.all(summary.eksperimen.map((e) => loadExperiment(e)));
+}

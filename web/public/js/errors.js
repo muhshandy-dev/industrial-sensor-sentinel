@@ -1,5 +1,8 @@
 import { h, s, clear } from "./dom.js";
 import { num, pct, seconds, MODEL_LABEL, MODE_LABEL } from "./format.js";
+import { loadAllExperiments } from "./data.js";
+import { errorTimeline } from "./evalviz.js";
+import { reveal } from "./motion.js";
 
 export function renderErrors(root, summary, state, setState) {
   clear(root);
@@ -28,6 +31,17 @@ export function renderErrors(root, summary, state, setState) {
     stat("Alarm palsu sebelum kejadian", `${num(fpBefore, 0)} pengukuran`, "Mesin masih normal. Satu pengukuran kira-kira satu detik."),
     stat("Alarm palsu sesudah kejadian", `${num(fpAfter, 0)} pengukuran`, "Label sudah normal, sensor belum pulih"),
   ));
+
+  const tlHost = h("div", null, h("p", { class: "loading" }, "Memuat garis waktu"));
+  root.append(h("h2", null, "Garis waktu alarm pada semua rekaman uji"),
+    h("p", { class: "section-lead" }, "Lihat sekaligus di mana alarm benar, alarm palsu, dan kejadian yang terlewat. Diambil langsung dari hasil evaluasi."),
+    tlHost);
+  loadAllExperiments(summary).then((exps) => {
+    if (!root.isConnected) return;
+    tlHost.replaceChildren(errorTimeline(exps, state.model, state.mode));
+    reveal(tlHost);
+    root.dataset.viz = "siap";
+  }).catch(() => tlHost.replaceChildren(h("p", { class: "empty" }, "Garis waktu belum bisa dimuat.")));
 
   const findings = [
     rho != null && rho < 0

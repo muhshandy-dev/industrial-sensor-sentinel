@@ -1,5 +1,8 @@
 import { h, s, clear } from "./dom.js";
 import { num, pct, seconds, ci, MODEL_LABEL, MODE_LABEL, SCHEME_LABEL, SCHEME_SHORT } from "./format.js";
+import { loadAllExperiments } from "./data.js";
+import { prPanel, thresholdPanel } from "./evalviz.js";
+import { growBars } from "./motion.js";
 
 export function renderPerformance(root, summary, state, setState) {
   clear(root);
@@ -40,6 +43,32 @@ export function renderPerformance(root, summary, state, setState) {
     barPanel("Kualitas skor sebelum diberi batas alarm (PR-AUC)", rows, (r) => r.uji.pr_auc, null, rows[0].r.uji.prevalensi_anomali),
   );
   root.append(bars);
+
+  // Grafik evaluasi interaktif dari skor rekaman uji (Skema A).
+  const schemeNote = scheme === "p1_kalibrasi_awal" ? "" : " Grafik ini selalu memakai Skema A, karena skor per detik hanya disimpan untuk skema utama.";
+  const prHost = h("div", null, h("p", { class: "loading" }, "Memuat skor rekaman uji"));
+  const thrHost = h("div", null, h("p", { class: "loading" }, "Memuat skor rekaman uji"));
+  root.append(
+    h("h2", null, "Kurva presisi dan recall"),
+    h("p", { class: "section-lead" }, `Setiap garis menunjukkan tarik ulur antara alarm yang tepat dan anomali yang tertangkap, untuk semua kemungkinan batas skor. Makin dekat ke kanan atas makin baik.${schemeNote}`),
+    prHost,
+    h("h2", null, "Dampak menggeser batas alarm"),
+    h("p", { class: "section-lead" }, `Batas rendah menangkap lebih banyak kejadian tetapi menambah alarm palsu. Geser batas atau klik grafik untuk melihat tarik ulurnya.${schemeNote}`),
+    thrHost,
+  );
+  const stops = [];
+  loadAllExperiments(summary).then((exps) => {
+    if (!root.isConnected) return;
+    const pr = prPanel(exps, summary, mode);
+    const th = thresholdPanel(exps, summary, mode);
+    prHost.replaceChildren(pr.el);
+    thrHost.replaceChildren(th.el);
+    stops.push(pr.stop, th.stop);
+    root.dataset.viz = "siap";
+  }).catch(() => {
+    prHost.replaceChildren(h("p", { class: "empty" }, "Skor rekaman uji belum bisa dimuat."));
+    thrHost.replaceChildren();
+  });
 
   // Tabel
   const th = (t, n) => h("th", { class: n ? "n" : "", scope: "col" }, t);
@@ -89,9 +118,11 @@ export function renderPerformance(root, summary, state, setState) {
   ));
   root.append(h("h2", null, "Hasil per rekaman uji"),
     h("div", { class: "table-wrap", tabindex: 0, role: "region", "aria-label": "Tabel. Geser ke samping untuk melihat kolom lain." }, h("table", null,
-      h("caption", null, "Satu kejadian anomali per rekaman. Alarm hanya dihitung benar bila mulai menyala saat kejadian berlangsung."),
+      h("caption", null, "Satu kejadian anomali per rekaman. Alarm hanya dihitung benar bila mulai menyala saat kejadian berlangsung. Waktu 0 detik berarti alarm sudah menyala sebelum kejadian dan masih menyala saat kejadian dimulai; alarm itu juga dihitung palsu."),
       h("thead", null, h("tr", null, h("th", { scope: "col" }, "Rekaman"), models.map((m) => h("th", { scope: "col" }, MODEL_LABEL[m])))),
       h("tbody", null, matrix))));
+  growBars(root);
+  return () => { for (const f of stops) f(); };
 }
 
 function barPanel(title, rows, val, ciOf, baseline) {
@@ -103,7 +134,7 @@ function barPanel(title, rows, val, ciOf, baseline) {
     const range = ciOf ? ciOf(r) : null;
     const svg = s("svg", { viewBox: `0 0 ${W} 22`, role: "img", "aria-label": `${MODEL_LABEL[id]}: ${num(v, 2)}` });
     svg.append(s("rect", { x: 0, y: 8, width: W, height: 6, rx: 3, fill: "var(--grid)" }));
-    svg.append(s("rect", { x: 0, y: 8, width: Math.max(0, Math.min(1, v)) * W, height: 6, rx: 3, fill: "var(--signal)" }));
+    svg.append(s("rect", { class: "bar-fill", x: 0, y: 8, width: Math.max(0, Math.min(1, v)) * W, height: 6, rx: 3, fill: `var(--${{ ambang_statistik: "m1", pca: "m2", isolation_forest: "m3" }[id]})` }));
     if (range) {
       svg.append(s("line", { x1: range[0] * W, x2: range[1] * W, y1: 11, y2: 11, stroke: "var(--text)", "stroke-width": 1.5 }));
       svg.append(s("line", { x1: range[0] * W, x2: range[0] * W, y1: 5, y2: 17, stroke: "var(--text)", "stroke-width": 1.5 }));
