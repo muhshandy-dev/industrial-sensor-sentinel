@@ -8,7 +8,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..", "public");
 const errors = [];
 const html = readFileSync(join(root, "index.html"), "utf8");
 for (const m of html.matchAll(/(?:src|href)="([^"#]+)"/g)) {
-  const ref = m[1];
+  const ref = m[1].split("?")[0];
   if (/^(https?:|mailto:)/.test(ref)) continue;
   if (!existsSync(join(root, ref))) errors.push(`rujukan hilang: ${ref}`);
 }

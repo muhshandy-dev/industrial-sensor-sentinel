@@ -26,9 +26,9 @@ const ICON_RESTART = "M12 5a7 7 0 1 1-6.6 4.7l1.9.6A5 5 0 1 0 12 7v3L7.5 6 12 2z
 export async function renderConsole(root, summary, state, setState) {
   clear(root);
   root.append(
-    h("p", { class: "eyebrow" }, "Pemutar rekaman sensor"),
-    h("h1", null, "Putar ulang rekaman dan lihat kapan alarm menyala"),
-    h("p", { class: "lead" }, "Pilih satu rekaman uji, lalu putar. Skor sudah dihitung sebelumnya dari rekaman yang tersimpan, jadi ini pemutaran ulang, bukan pemantauan langsung."),
+    h("header", { class: "page-head" },
+      h("h1", null, "Pemutar rekaman"),
+      h("p", { class: "lead" }, "Putar ulang satu rekaman uji dan lihat kapan alarm menyala dibanding kejadian sebenarnya. Skor dihitung sebelumnya dari rekaman tersimpan, jadi ini bukan pemantauan langsung.")),
   );
 
   const entries = summary.eksperimen;
@@ -397,19 +397,23 @@ function drawChart(host, tip, exp, scores, cfg, res, summary, focusId, onSeek) {
   host.append(tip);
   const W = Math.max(host.clientWidth - 24, 280);
   const narrow = W < 560;
-  const padL = narrow ? 6 : 10, padR = narrow ? 8 : 14;
+  // Kolom kiri khusus untuk nama lajur dan angka sumbu, supaya tidak menimpa garis data.
+  const padL = narrow ? 46 : 64, padR = narrow ? 6 : 10;
   const pw = W - padL - padR;
   const n = exp.detik.length;
   const tMax = exp.detik[n - 1];
   const x = (t) => padL + (t / tMax) * pw;
-  const laneH = 18;
-  const scoreH = narrow ? 92 : 120;
-  const sensH = narrow ? 104 : 140;
-  const yTruth = 18, yAlarm = yTruth + laneH + 6;
-  const yScore = yAlarm + laneH + 18;
-  const ySens = yScore + scoreH + 22;
-  const axisY = ySens + sensH + 4;
-  const H = axisY + 34;
+  const gx = padL - 8;
+  const laneH = 16;
+  const scoreH = narrow ? 96 : 128;
+  const sensH = narrow ? 84 : 112;
+  const yTruth = 6, yAlarm = yTruth + laneH + 6;
+  const yScoreTitle = yAlarm + laneH + 26;
+  const yScore = yScoreTitle + 10;
+  const ySensTitle = yScore + scoreH + 30;
+  const ySens = ySensTitle + 10;
+  const axisY = ySens + sensH + 6;
+  const H = axisY + (narrow ? 22 : 36);
   const [s0, e0] = exp.kejadian;
   const tS = exp.detik[s0], tE = exp.detik[e0];
   const tCal = exp.detik[exp.kalibrasi_baris - 1];
@@ -420,18 +424,20 @@ function drawChart(host, tip, exp, scores, cfg, res, summary, focusId, onSeek) {
   const clipRect = s("rect", { x: 0, y: 0, width: W, height: H });
   svg.append(s("defs", null, s("clipPath", { id: clipId }, clipRect)));
   const clipped = () => s("g", { "clip-path": `url(#${clipId})` });
+  const gutter = (y, text, cls = "t-label") => svg.append(s("text", { class: cls, x: gx, y, "text-anchor": "end", "dominant-baseline": "middle" }, text));
 
   svg.append(s("rect", { class: "band-calib", x: x(0), y: yTruth, width: x(tCal) - x(0), height: axisY - yTruth }));
-  svg.append(s("text", { class: "t-label", x: x(0) + 4, y: yTruth - 6 }, "Kalibrasi"));
-  svg.append(s("text", { class: "t-title", x: padL + pw, y: yTruth - 6, "text-anchor": "end" }, narrow ? "Kejadian dan alarm" : "Kejadian sebenarnya dan alarm model"));
-  // Kerangka lajur samar
+  // Lajur kejadian dan alarm
+  svg.append(s("rect", { class: "lane-bg", x: padL, y: yTruth, width: pw, height: laneH }));
+  svg.append(s("rect", { class: "lane-bg", x: padL, y: yAlarm, width: pw, height: laneH }));
+  gutter(yTruth + laneH / 2, narrow ? "Label" : "Kejadian", "t-lane");
+  gutter(yAlarm + laneH / 2, "Alarm", "t-lane");
   svg.append(s("rect", { class: "band-truth reveal-ghost", x: x(tS), y: yTruth, width: Math.max(x(tE) - x(tS), 1), height: laneH }));
-  svg.append(s("line", { class: "grid-line", x1: padL, x2: padL + pw, y1: yAlarm + laneH, y2: yAlarm + laneH }));
   const lanes = clipped();
   lanes.append(s("rect", { class: "band-truth", x: x(tS), y: yTruth, width: Math.max(x(tE) - x(tS), 1), height: laneH }));
   for (const [a, b] of res.episodes) {
     const ok = a >= s0 && a <= e0;
-    lanes.append(s("rect", { class: `band-alarm${ok ? "" : " false"}`, x: x(exp.detik[a]), y: yAlarm + 2, width: Math.max(x(exp.detik[b]) - x(exp.detik[a]), 2), height: laneH - 4, rx: 2 }));
+    lanes.append(s("rect", { class: `band-alarm${ok ? "" : " false"}`, x: x(exp.detik[a]), y: yAlarm + 3, width: Math.max(x(exp.detik[b]) - x(exp.detik[a]), 2), height: laneH - 6, rx: 1.5 }));
   }
   svg.append(lanes);
 
@@ -440,20 +446,27 @@ function drawChart(host, tip, exp, scores, cfg, res, summary, focusId, onSeek) {
   const top = symlog(Math.max(maxS, cfg.ambang * 1.2));
   const bottom = symlog(Math.min(-0.5, ...scores));
   const ys = (v) => yScore + scoreH - ((symlog(v) - bottom) / (top - bottom)) * scoreH;
-  for (const tick of [0, 1, 10, 100, 1000]) {
+  svg.append(s("text", { class: "t-title", x: padL, y: yScoreTitle }, narrow ? "Skor anomali" : "Skor anomali (skala log, makin tinggi makin tidak normal)"));
+  // Keterangan garis batas di baris judul, bukan di atas garis data
+  const thrKey = s("g", { transform: `translate(${padL + pw}, ${yScoreTitle - 4})` });
+  thrKey.append(s("line", { class: "thr-line", x1: -112, x2: -92, y1: 0, y2: 0 }));
+  thrKey.append(s("text", { class: "t-label", x: 0, y: 4, "text-anchor": "end" }, `batas alarm ${num(cfg.ambang, cfg.ambang < 1 ? 3 : 1)}`));
+  svg.append(thrKey);
+  svg.append(s("rect", { class: "plot-frame", x: padL, y: yScore, width: pw, height: scoreH }));
+  let lastY = Infinity;
+  for (const tick of [0, 1, 10, 100, 1000, 10000]) {
     if (symlog(tick) > top) continue;
-    svg.append(s("line", { class: "grid-line", x1: padL, x2: padL + pw, y1: ys(tick), y2: ys(tick) }));
-    svg.append(s("text", { class: "t-label", x: padL + 2, y: ys(tick) - 3 }, String(tick)));
+    const yy = ys(tick);
+    svg.append(s("line", { class: "grid-line", x1: padL, x2: padL + pw, y1: yy, y2: yy }));
+    if (Math.abs(lastY - yy) >= 12) { gutter(yy, num(tick, 0)); lastY = yy; }
   }
-  svg.append(s("text", { class: "t-title", x: padL + pw, y: yScore - 6, "text-anchor": "end" }, narrow ? "Skor anomali" : "Skor anomali (makin tinggi makin tidak normal)"));
   const scorePts = exp.detik.map((t, i) => `${x(t).toFixed(1)},${ys(scores[i]).toFixed(1)}`).join(" ");
-  svg.append(s("polyline", { class: "trace score reveal-ghost", points: scorePts }));
+  svg.append(s("polyline", { class: "trace score reveal-ghost", points: scorePts, fill: "none" }));
   const scoreG = clipped();
   scoreG.append(s("polygon", { class: "area-score", points: `${x(0)},${yScore + scoreH} ${scorePts} ${x(tMax)},${yScore + scoreH}` }));
-  scoreG.append(s("polyline", { class: "trace score", points: scorePts }));
+  scoreG.append(s("polyline", { class: "trace score", points: scorePts, fill: "none" }));
   svg.append(scoreG);
   svg.append(s("line", { class: "thr-line", x1: padL, x2: padL + pw, y1: ys(cfg.ambang), y2: ys(cfg.ambang) }));
-  svg.append(s("text", { class: "t-label", x: padL + pw - 4, y: ys(cfg.ambang) - 4, "text-anchor": "end" }, "batas alarm"));
 
   // Sensor pilihan
   const sensG = s("g");
@@ -469,38 +482,41 @@ function drawChart(host, tip, exp, scores, cfg, res, summary, focusId, onSeek) {
     const pad = (mx - mn) * 0.08;
     const lo = mn - pad, hi = mx + pad;
     yv = (v) => ySens + sensH - ((v - lo) / (hi - lo)) * sensH;
-    sensG.append(s("rect", { x: padL, y: ySens, width: pw, height: sensH, fill: "none", class: "grid-line" }));
-    sensG.append(s("text", { class: "t-title", x: padL + 6, y: ySens - 6 }, `${sen.label} (${sen.satuan})`));
-    sensG.append(s("text", { class: "t-label", x: padL + pw - 4, y: ySens + 12, "text-anchor": "end" }, num(mx, 2)));
-    sensG.append(s("text", { class: "t-label", x: padL + pw - 4, y: ySens + sensH - 4, "text-anchor": "end" }, num(mn, 2)));
+    sensG.append(s("rect", { class: "plot-frame", x: padL, y: ySens, width: pw, height: sensH }));
+    sensG.append(s("text", { class: "t-title", x: padL, y: ySensTitle }, `${sen.label} (${sen.satuan})`));
+    for (const [v, yy] of [[mx, yv(mx)], [mn, yv(mn)]]) {
+      sensG.append(s("line", { class: "grid-line", x1: padL, x2: padL + pw, y1: yy, y2: yy }));
+      sensG.append(s("text", { class: "t-label", x: gx, y: yy, "text-anchor": "end", "dominant-baseline": "middle" }, num(v, Math.abs(v) >= 100 ? 0 : 2)));
+    }
     const pts = exp.detik.map((t, i) => `${x(t).toFixed(1)},${yv(sensVals[i]).toFixed(1)}`).join(" ");
-    sensG.append(s("polyline", { class: "trace focus reveal-ghost", points: pts }));
+    sensG.append(s("polyline", { class: "trace focus reveal-ghost", points: pts, fill: "none" }));
     const g = clipped();
-    g.append(s("polyline", { class: "trace focus", points: pts }));
+    g.append(s("polyline", { class: "trace focus", points: pts, fill: "none" }));
     sensG.append(g);
   };
   drawSensor(focusId);
 
   // Penanda kejadian dan alarm, muncul saat dilewati
   const marks = [];
-  const evMark = s("path", { class: "mark mark-truth", d: `M${x(tS)} ${yTruth - 1}l5 5-5 5-5-5z` });
+  const evMark = s("path", { class: "mark mark-truth", d: `M${x(tS)} ${yTruth + laneH / 2 - 5}l5 5-5 5-5-5z` });
   marks.push({ el: evMark, at: s0 });
   svg.append(evMark);
   for (const [a] of res.episodes) {
     const ok = a >= s0 && a <= e0;
-    const m = s("circle", { class: `mark ${ok ? "mark-ok" : "mark-bad"}`, cx: x(exp.detik[a]), cy: yAlarm + laneH / 2, r: 5 });
+    const m = s("circle", { class: `mark ${ok ? "mark-ok" : "mark-bad"}`, cx: x(exp.detik[a]), cy: yAlarm + laneH / 2, r: 4.5 });
     marks.push({ el: m, at: a });
     svg.append(m);
   }
 
   // Sumbu waktu
-  const step = niceStep(tMax / (narrow ? 4 : 8));
+  const step = niceStep(tMax / (narrow ? 3 : 8));
   for (let t = 0; t <= tMax; t += step) {
     svg.append(s("line", { class: "grid-line", x1: x(t), x2: x(t), y1: axisY, y2: axisY + 4 }));
-    const anchor = t === 0 ? "start" : t + step > tMax && x(t) > W - 24 ? "end" : "middle";
+    const anchor = t === 0 ? "start" : x(t) > W - 20 ? "end" : "middle";
     svg.append(s("text", { class: "t-label", x: x(t), y: axisY + 16, "text-anchor": anchor }, `${t}`));
   }
-  svg.append(s("text", { class: "t-label", x: padL + pw / 2, y: axisY + 30, "text-anchor": "middle" }, "Waktu sejak awal rekaman (detik)"));
+  if (!narrow) svg.append(s("text", { class: "t-label", x: padL + pw / 2, y: axisY + 31, "text-anchor": "middle" }, "Waktu sejak awal rekaman (detik)"));
+  else gutter(axisY + 12, "detik");
 
   // Kepala putar
   const glow = s("line", { class: "playhead-glow", y1: yTruth, y2: axisY });
@@ -588,9 +604,9 @@ function drawStrips(host, exp, summary) {
     svg.append(s("rect", { class: "band-truth reveal-ghost", x: x(exp.detik[s0]), y: y0, width: x(exp.detik[e0]) - x(exp.detik[s0]), height: stripH }));
     svg.append(s("text", { class: "t-title", x: padL, y: y0 - 5 }, `${sen.label} (${sen.satuan})`));
     const pts = exp.detik.map((t, i) => `${x(t).toFixed(1)},${yv(vals[i]).toFixed(1)}`).join(" ");
-    svg.append(s("polyline", { class: "trace reveal-ghost", points: pts }));
+    svg.append(s("polyline", { class: "trace reveal-ghost", points: pts, fill: "none" }));
     const g = s("g", { "clip-path": `url(#${clipId})` });
-    g.append(s("polyline", { class: "trace", points: pts }));
+    g.append(s("polyline", { class: "trace", points: pts, fill: "none" }));
     svg.append(g);
   });
   host.append(svg);

@@ -9,9 +9,9 @@ export function renderErrors(root, summary, state, setState) {
   const key = `p1_kalibrasi_awal|${state.model}|${state.mode}`;
   const a = summary.analisis_kesalahan[key];
   root.append(
-    h("p", { class: "eyebrow" }, "Analisis kesalahan"),
-    h("h1", null, "Di mana dan mengapa model keliru"),
-    h("p", { class: "lead" }, "Alarm palsu adalah alarm yang menyala ketika mesin normal. Kejadian terlewat adalah anomali yang tidak memicu alarm sama sekali. Analisis ini memakai Skema A (kalibrasi awal) pada rekaman uji."),
+    h("header", { class: "page-head" },
+      h("h1", null, "Analisis kesalahan"),
+      h("p", { class: "lead" }, "Alarm palsu menyala ketika mesin normal. Kejadian terlewat adalah anomali yang tidak memicu alarm sama sekali. Semua angka memakai Skema A (kalibrasi awal) pada rekaman uji.")),
   );
   const seg = (values, labels, cur, k, name) => h("div", { class: "seg", role: "group", "aria-label": name }, values.map((v) => h("button", { type: "button", "aria-pressed": String(v === cur), onclick: () => setState({ [k]: v }) }, labels[v])));
   root.append(h("div", { class: "panel controls" },
@@ -103,7 +103,7 @@ function scatter(rows) {
   svg.append(s("text", { class: "t-label", x: (L + W - R) / 2, y: H - 2, "text-anchor": "middle" }, small ? "Perubahan dibanding variasi normal" : "Besar perubahan sensor dibanding variasi normal"));
   const pts = rows.map((r, i) => ({ r, x: X(xs[i]), y: Y(r.titik_terlewat / r.titik_anomali), frac: r.titik_terlewat / r.titik_anomali }));
   for (const p of pts) {
-    const c = s("circle", { cx: p.x, cy: p.y, r: 6, fill: p.r.terdeteksi ? "var(--signal)" : "var(--alarm)", stroke: "var(--bg)", "stroke-width": 1.5 });
+    const c = s("circle", { cx: p.x, cy: p.y, r: 6, fill: p.r.terdeteksi ? "var(--accent)" : "var(--alarm)", stroke: "var(--bg)", "stroke-width": 1.5 });
     c.append(s("title", null, `${p.r.eksperimen}: ${Math.round(p.frac * 100)}% tanpa alarm`));
     svg.append(c);
   }

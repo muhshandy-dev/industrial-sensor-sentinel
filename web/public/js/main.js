@@ -58,7 +58,6 @@ function buildMenu() {
     links.append(h("a", { href: `#/${v.id}`, "data-view": v.id }, icon, h("span", null, v.label)));
   }
   menu.append(h("div", { class: "rail-inner" },
-    h("p", { class: "rail-head" }, "Navigasi"),
     links,
     h("div", { class: "rail-foot" }, h("strong", null, "Data SKAB"), h("br"), "Rig pompa air laboratorium. Hasil batch, bukan pemantauan langsung."),
   ));
