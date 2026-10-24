@@ -9,5 +9,19 @@
   Cross-Origin-Resource-Policy: same-origin
   Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
 
+# HTML, CSS, dan JS selalu diperiksa ulang ke server (murah berkat ETag),
+# supaya pengunjung tidak pernah mendapat CSS lama dengan JS baru setelah deploy.
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/css/*
+  Cache-Control: no-cache
+/js/*
+  Cache-Control: no-cache
+
+/fonts/*
+  Cache-Control: public, max-age=2592000
+
 /data/*
   Cache-Control: public, max-age=300

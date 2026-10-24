@@ -57,7 +57,7 @@ export function prPanel(exps, summary, mode) {
     const W = Math.max(width - 24, 280);
     const narrow = W < 520;
     const H = narrow ? 300 : 360;
-    const L = 44, R = 14, T = 12, B = 40;
+    const L = 60, R = 14, T = 12, B = 40;
     const X = (r) => L + r * (W - L - R);
     const Y = (p) => T + (1 - p) * (H - T - B);
     const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img", "aria-label": "Kurva presisi dan recall untuk tiga model pada rekaman uji." });
@@ -65,7 +65,7 @@ export function prPanel(exps, summary, mode) {
       svg.append(s("line", { class: "grid-line", x1: X(0), x2: X(1), y1: Y(v), y2: Y(v) }));
       svg.append(s("line", { class: "grid-line", x1: X(v), x2: X(v), y1: Y(0), y2: Y(1) }));
       svg.append(s("text", { class: "t-label", x: L - 6, y: Y(v) + 4, "text-anchor": "end" }, num(v, 2)));
-      svg.append(s("text", { class: "t-label", x: X(v), y: H - B + 16, "text-anchor": "middle" }, num(v, 2)));
+      if (!narrow || v % 0.5 === 0) svg.append(s("text", { class: "t-label", x: X(v), y: H - B + 16, "text-anchor": v === 1 ? "end" : v === 0 ? "start" : "middle" }, num(v, 2)));
     }
     svg.append(s("text", { class: "t-label", x: (L + W - R) / 2, y: H - 6, "text-anchor": "middle" }, "Cakupan anomali (recall)"));
     svg.append(s("text", { class: "t-label", x: 12, y: (T + H - B) / 2, transform: `rotate(-90 12 ${(T + H - B) / 2})`, "text-anchor": "middle" }, "Ketepatan alarm (presisi)"));
@@ -205,7 +205,7 @@ export function thresholdPanel(exps, summary, mode) {
     const narrow = W < 520;
     const L = 40, R = 14;
     const h1 = narrow ? 150 : 180, h2 = narrow ? 80 : 96;
-    const T = 10, gap = 34;
+    const T = 10, gap = 40;
     const H = T + h1 + gap + h2 + 34;
     const X = (i) => L + (i / (THRESHOLDS.length - 1)) * (W - L - R);
     const Y1 = (v) => T + (1 - v) * h1;
@@ -230,7 +230,7 @@ export function thresholdPanel(exps, summary, mode) {
     for (const t of [0.1, 1, 10, 100]) {
       const i = THRESHOLDS.findIndex((x) => x >= t - 1e-9);
       if (i < 0) continue;
-      svg.append(s("text", { class: "t-label", x: X(i), y: H - 18, "text-anchor": "middle" }, num(t, t < 1 ? 1 : 0)));
+      svg.append(s("text", { class: "t-label", x: X(i), y: H - 18, "text-anchor": X(i) > W - R - 16 ? "end" : "middle" }, num(t, t < 1 ? 1 : 0)));
     }
     svg.append(s("text", { class: "t-label", x: (L + W - R) / 2, y: H - 3, "text-anchor": "middle" }, "Batas alarm (skor, skala log)"));
     const offK = officialIdx();

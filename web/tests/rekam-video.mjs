@@ -17,7 +17,7 @@ for (const [name, vp] of [["desktop", { width: 1440, height: 900 }], ["mobile", 
   await page.waitForSelector('#pemutar[data-intro="selesai"]');
   await page.locator('#kecepatan button[data-speed="120"]').click();
   await page.locator("#ulang").click(); // Mulai ulang langsung memutar.
-  await page.locator("#pemutar .chart-stage").first().evaluate((el) => window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 150, behavior: "instant" }));
+  await page.locator(vp.width > 600 ? "#pemutar" : "#pemutar .chart-stage").first().evaluate((el) => window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 64, behavior: "instant" }));
   await page.waitForTimeout(6000);
   await page.locator("#putar").click();
   const svg = page.locator("#pemutar .chart-stage svg").first();

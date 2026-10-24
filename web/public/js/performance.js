@@ -12,9 +12,9 @@ export function renderPerformance(root, summary, state, setState) {
   const rows = models.map((m) => ({ id: m, r: summary.kinerja[scheme][m][mode] }));
 
   root.append(
-    h("p", { class: "eyebrow" }, "Kinerja model"),
-    h("h1", null, "Seberapa baik tiap model mendeteksi anomali"),
-    h("p", { class: "lead" }, "Semua angka dihitung pada rekaman uji yang tidak dipakai untuk melatih atau menyetel apa pun. Karena jumlah rekaman uji kecil, angka utama disertai rentang ketidakpastian 95 persen. Rentang yang lebar berarti hasilnya belum pasti."),
+    h("header", { class: "page-head" },
+      h("h1", null, "Kinerja model"),
+      h("p", { class: "lead" }, "Dihitung pada rekaman uji yang tidak dipakai untuk melatih atau menyetel apa pun. Rekaman uji sedikit, jadi angka utama disertai rentang ketidakpastian 95 persen.")),
   );
 
   const controls = h("div", { class: "panel controls" },

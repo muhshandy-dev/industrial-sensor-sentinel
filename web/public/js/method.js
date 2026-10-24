@@ -18,8 +18,9 @@ export function renderMethod(root, summary) {
       h("td", null, inSession(sp.test).join(", ")));
   });
   root.append(
-    h("p", { class: "eyebrow" }, "Metodologi dan keterbatasan"),
-    h("h1", null, "Bagaimana hasil ini dibuat"),
+    h("header", { class: "page-head" },
+      h("h1", null, "Metodologi"),
+      h("p", { class: "lead" }, "Data, pembagian rekaman, model, dan cara menilai, beserta batasannya.")),
     h("h2", null, "Apa yang dimaksud peringatan dini"),
     h("p", null, "Peringatan dini di sini berarti alarm menyala ketika pola sensor mulai berbeda dari kondisi normal, idealnya dalam hitungan detik setelah gangguan dimulai. Ini bukan ramalan kapan mesin akan rusak, bukan perkiraan sisa umur komponen, dan bukan sistem pemeliharaan prediktif. Website ini juga tidak terhubung ke sensor mana pun: semua skor dihitung sebelumnya dari rekaman yang tersimpan, lalu ditampilkan ulang."),
     h("h2", null, "Data"),
