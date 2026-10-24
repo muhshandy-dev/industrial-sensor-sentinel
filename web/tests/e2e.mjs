@@ -79,8 +79,11 @@ for (const width of WIDTHS) {
   const r0 = await page.locator("#keterangan-kursor").innerText();
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("ArrowRight");
+  const moved = await page
+    .waitForFunction((before) => document.querySelector("#keterangan-kursor").innerText !== before, r0, { timeout: 5000 })
+    .then(() => true, () => false);
   const r1 = await page.locator("#keterangan-kursor").innerText();
-  ok(r0 !== r1 && /Detik/.test(r1), `konsol @${width}: panah tidak menggeser penanda`);
+  ok(moved && /Detik/.test(r1), `konsol @${width}: panah tidak menggeser penanda`);
   await page.screenshot({ path: join(OUT, `konsol-interaksi-${width}-gelap.png`), fullPage: true });
 
   // Kinerja dan kesalahan: ganti skema dan model

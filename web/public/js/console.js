@@ -102,7 +102,12 @@ export async function renderConsole(root, summary, state, setState) {
   slThr.addEventListener("input", () => { cfg = { ...cfg, ambang: sliderToThr(Number(slThr.value)) }; update(); });
   slPer.addEventListener("input", () => { cfg = { ...cfg, ketekunan_detik: Number(slPer.value) }; update(); });
   slHold.addEventListener("input", () => { cfg = { ...cfg, tahan_detik: Number(slHold.value) }; update(); });
-  const ro = new ResizeObserver(() => update());
+  // Gambar ulang hanya bila lebarnya berubah. Perubahan tinggi akibat gambar sendiri tidak perlu memicu ulang.
+  let lastWidth = 0;
+  const ro = new ResizeObserver((entries) => {
+    const w = Math.round(entries[0].contentRect.width);
+    if (w !== lastWidth) { lastWidth = w; update(); }
+  });
   ro.observe(chartHost);
   update();
   return () => { ro.disconnect(); cancelAnimationFrame(rafId); };
@@ -238,9 +243,11 @@ function drawChart(host, readout, exp, scores, cfg, res, summary) {
     while (lo < hi) { const mid = (lo + hi) >> 1; if (exp.detik[mid] < t) lo = mid + 1; else hi = mid; }
     return lo;
   };
-  let cur = Math.min(exp.kalibrasi_baris + 1, exp.detik.length - 1);
+  let cur = host.dataset.cursor ? Number(host.dataset.cursor) : Math.min(exp.kalibrasi_baris + 1, exp.detik.length - 1);
+  cur = Math.min(cur, exp.detik.length - 1);
   const show = (i) => {
     cur = Math.max(0, Math.min(exp.detik.length - 1, i));
+    host.dataset.cursor = String(cur);
     cursor.setAttribute("x1", x(exp.detik[cur]));
     cursor.setAttribute("x2", x(exp.detik[cur]));
     cursor.setAttribute("visibility", "visible");
