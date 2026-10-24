@@ -22,6 +22,8 @@ Deteksi anomali dan peringatan dini sensor industri. Proyek ini melatih dan meni
 - Metrik tingkat titik dan tingkat kejadian: presisi, recall, F1, PR-AUC, recall kejadian, alarm palsu per jam, tunda deteksi.
 - Analisis kesalahan per rekaman.
 - Website statis (tanpa build, tanpa dependensi runtime) dengan alarm yang dihitung ulang di browser, diuji paritasnya dengan Python.
+- Pengalaman interaktif: pemutar rekaman sensor (Putar, Jeda, Mulai ulang, kecepatan 10x sampai 120x, timeline dengan penanda kejadian dan alarm, tooltip), kurva presisi dan recall yang bisa ditelusuri, simulasi dampak menggeser batas alarm, dan garis waktu alarm benar, palsu, dan terlewat untuk semua rekaman uji. Semua visual dihitung dari skor tersimpan dan diuji agar sama dengan hasil Python (PR-AUC, F1, presisi, recall kejadian, alarm palsu per jam, tunda median).
+- Animasi memakai CSS dan Web Animations API (transform dan opacity), menghormati `prefers-reduced-motion`, dan pemutaran selalu bisa dijeda.
 
 ## Hasil singkat (rekaman uji, skema A)
 
@@ -80,7 +82,7 @@ Detail ada di [docs/REPRODUCE.md](docs/REPRODUCE.md). Data dan model dijelaskan 
 ## Kualitas
 
 - Python: pytest (tes sintetis, tes data asli, tes reproduksi hasil), ruff, CI di Python 3.11 dan 3.13, pip-audit.
-- Website: tes paritas alarm browser terhadap hasil Python untuk 60 konfigurasi, tes e2e Playwright di 320, 375, 768, dan 1440 piksel (tema gelap dan terang, juga dengan CPU diperlambat 4 kali), pemeriksaan aksesibilitas axe (WCAG 2 AA), CSP ketat, tanpa permintaan pihak ketiga, npm audit.
+- Website: tes paritas alarm browser terhadap hasil Python untuk 60 konfigurasi, tes paritas kurva presisi-recall dan sapuan batas alarm terhadap `reports/results.json`, tes sinkronisasi status pemutar dengan episode alarm pada lebih dari 40 ribu titik, tes Putar, Jeda, Mulai ulang, dan laju bingkai saat memutar, tes e2e Playwright di 320, 375, 768, dan 1440 piksel (tema gelap dan terang, juga dengan CPU diperlambat 4 kali), pemeriksaan aksesibilitas axe (WCAG 2 AA), CSP ketat, tanpa permintaan pihak ketiga, npm audit.
 - Pemeriksaan independen: `python tools/verify_published.py` menghitung ulang semua angka website dari CSV SKAB mentah tanpa memakai modul metrik proyek, lalu memeriksa pembagian data (uji selalu rekaman terbaru per sesi, kalibrasi tanpa label anomali). Dijalankan di CI.
 
 ## Status dan batasan yang jujur
