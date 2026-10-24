@@ -33,7 +33,7 @@ Cara menghilangkan check Workers Builds yang gagal, tanpa menyentuh proyek Pages
 
 1. Cloudflare: Workers and Pages. Cari entri bertipe **Worker** bernama `industrial-sensor-sentinel` (ikon dan label berbeda dari proyek Pages).
 2. Bila ada: buka, Settings, Build, lalu Disconnect pada bagian Git repository. Worker kosong itu boleh dihapus bila memang tidak dipakai. Jangan hapus proyek Pages.
-3. Bila tidak ada, koneksi build lama tertinggal tanpa Worker. Buat sementara Worker bernama `industrial-sensor-sentinel` dari template Hello World, buka Settings, Build, Disconnect, lalu hapus Worker itu.
+3. Bila tidak ada, koneksi build lama tertinggal tanpa Worker. Check ini aman diabaikan karena tidak memengaruhi situs; bila ingin dihapus, minta bantuan dukungan Cloudflare dengan menyebut Build ID dari check yang gagal.
 4. Jangan mencabut akses aplikasi Cloudflare di GitHub, karena aplikasi yang sama dipakai oleh proyek Pages.
 
 ## Bila integrasi GitHub berstatus "disconnected"
