@@ -381,9 +381,11 @@ function drawTimeline(host, exp, r) {
       h("td", null, a < s0 ? "Sebelum kejadian" : a > e0 ? "Setelah kejadian" : "Saat kejadian"),
     );
   });
+  // Keterangan di luar tabel agar tidak ikut melebar saat tabel digeser di layar sempit.
   host.append(
+    h("p", { class: "table-note" }, `Kejadian sebenarnya berlangsung dari detik ${exp.detik[s0]} sampai ${exp.detik[e0]}. Waktu dihitung dari awal rekaman.`),
     h("div", { class: "table-wrap", tabindex: 0, role: "region", "aria-label": "Tabel. Geser ke samping untuk melihat kolom lain." }, h("table", null,
-      h("caption", null, `Kejadian sebenarnya berlangsung dari detik ${exp.detik[s0]} sampai ${exp.detik[e0]}. Waktu dihitung dari awal rekaman.`),
+      h("caption", null, "Alarm pada rekaman ini"),
       h("thead", null, h("tr", null, h("th", { class: "n", scope: "col" }, "Mulai"), h("th", { class: "n", scope: "col" }, "Lama"), h("th", { scope: "col" }, "Status"), h("th", { scope: "col" }, "Posisi"))),
       h("tbody", null, rows.length ? rows : h("tr", null, h("td", { colspan: 4, class: "empty" }, "Tidak ada alarm pada pengaturan ini."))),
     )),
@@ -519,11 +521,10 @@ function drawChart(host, tip, exp, scores, cfg, res, summary, focusId, onSeek) {
   else gutter(axisY + 12, "detik");
 
   // Kepala putar
-  const glow = s("line", { class: "playhead-glow", y1: yTruth, y2: axisY });
   const line = s("line", { class: "playhead", y1: yTruth, y2: axisY });
   const dotScore = s("circle", { class: "head-dot", r: 4.5 });
   const dotSens = s("circle", { class: "head-dot", r: 4.5 });
-  svg.append(glow, line, dotScore, dotSens);
+  svg.append(line, dotScore, dotSens);
 
   // Kursor penunjuk untuk tooltip
   const hover = s("line", { class: "cursor", y1: yTruth, y2: axisY, visibility: "hidden" });
@@ -566,7 +567,7 @@ function drawChart(host, tip, exp, scores, cfg, res, summary, focusId, onSeek) {
   const paint = (i) => {
     const px = x(exp.detik[i]);
     clipRect.setAttribute("width", Math.max(0, px));
-    for (const el of [glow, line]) { el.setAttribute("x1", px); el.setAttribute("x2", px); }
+    line.setAttribute("x1", px); line.setAttribute("x2", px);
     dotScore.setAttribute("cx", px); dotScore.setAttribute("cy", ys(scores[i]));
     dotSens.setAttribute("cx", px); dotSens.setAttribute("cy", yv(sensVals[i]));
     for (const m of marks) m.el.classList.toggle("on", i >= m.at);

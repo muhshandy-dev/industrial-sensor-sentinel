@@ -14,7 +14,8 @@ mkdirSync(OUT, { recursive: true });
 const WIDTHS = process.env.WIDTHS ? process.env.WIDTHS.split(",").map(Number) : [320, 375, 768, 1440];
 const VIEWS = ["ringkasan", "konsol", "kinerja", "kesalahan", "metode"];
 const failures = [];
-const ok = (cond, msg) => { if (!cond) { failures.push(msg); console.error("GAGAL:", msg); } };
+let checks = 0;
+const ok = (cond, msg) => { checks++; if (!cond) { failures.push(msg); console.error("GAGAL:", msg); } };
 const dataDir = join(here, "..", "public", "data");
 const summary = JSON.parse(readFileSync(join(dataDir, "ringkasan.json")));
 const loadExp = (id) => JSON.parse(readFileSync(join(dataDir, summary.eksperimen.find((e) => e.id === id).berkas)));
@@ -71,6 +72,12 @@ for (const width of WIDTHS) {
   }
   const reduced = await page.evaluate(() => !document.documentElement.classList.contains("motion") && document.querySelector("#pemutar") === null);
   ok(reduced, `@${width}: kelas gerak aktif padahal pengguna meminta gerak dikurangi`);
+  for (const view of ["ringkasan", "konsol"]) {
+    await page.goto(`${base}/#/${view}`);
+    await waitView(page, view);
+    const running = await page.evaluate(() => document.getAnimations().filter((x) => x.playState === "running").length);
+    ok(running === 0, `@${width} ${view}: ${running} animasi tetap berjalan padahal gerak dikurangi`);
+  }
 
   // Interaksi konsol
   await page.goto(`${base}/#/konsol`);
@@ -270,6 +277,78 @@ for (const width of [1440, 375]) {
   ok((await toggle.getAttribute("aria-pressed")) === "false", `${tag}: legenda kurva tidak bisa disembunyikan`);
   await toggle.click();
 
+  // Kondisi ekstrem 1: memutar sampai akhir rekaman berhenti rapi, lalu Putar mulai dari awal.
+  await page.goto(`${base}/#/konsol?exp=${encodeURIComponent("other/14")}`);
+  await waitView(page, "konsol");
+  const nEnd = loadExp("other/14").baris;
+  await page.locator('#kecepatan button[data-speed="120"]').click();
+  await page.locator("#posisi").evaluate((el, v) => { el.value = String(v); el.dispatchEvent(new Event("input", { bubbles: true })); }, nEnd - 40);
+  await page.locator("#putar").click();
+  const ended = await page.waitForFunction(() => document.querySelector("#pemutar").dataset.playing === "false", null, { timeout: 5000 }).then(() => true, () => false);
+  ok(ended && (await pos()) === nEnd - 1, `${tag}: pemutaran tidak berhenti tepat di akhir rekaman (${await pos()})`);
+  ok((await page.locator("#putar").getAttribute("aria-label")) === "Putar", `${tag}: tombol tidak kembali ke Putar di akhir rekaman`);
+  await page.locator("#putar").click();
+  await page.waitForTimeout(300);
+  const again = await pos();
+  ok(again < 200 && (await page.locator("#pemutar").getAttribute("data-playing")) === "true", `${tag}: Putar setelah akhir tidak mulai dari awal (${again})`);
+
+  // Kondisi ekstrem 2: batas alarm diubah saat pemutaran berjalan. Pemutaran tetap jalan, status tetap sinkron.
+  await page.locator("#sl-ambang").fill("1000");
+  await page.waitForTimeout(400);
+  ok((await page.locator("#pemutar").getAttribute("data-playing")) === "true", `${tag}: mengubah batas menghentikan pemutaran`);
+  {
+    // Batas tertinggi slider adalah 100. Jumlah alarm yang tampil harus sama dengan hitungan ulang pada batas itu.
+    const e14 = loadExp("other/14");
+    const d14 = e14.model.pca.sensitif;
+    const rMax = evaluateExperiment(e14, d14.skor, { ambang: 100, ketekunan_detik: d14.ketekunan_detik, tahan_detik: d14.tahan_detik });
+    ok((await page.locator("#pemutar .band-alarm").count()) === rMax.episodes.length, `${tag}: alarm pada batas tertinggi tidak sesuai hitungan ulang`);
+  }
+  await page.getByRole("button", { name: "Kembalikan ke nilai hasil penyetelan" }).click();
+  await page.waitForTimeout(300);
+  {
+    const d14 = loadExp("other/14").model.pca.sensitif;
+    ok((await page.locator("#pemutar .band-alarm").count()) === d14.episode_alarm.length, `${tag}: alarm tidak kembali setelah reset batas`);
+  }
+  await page.locator("#putar").click();
+  {
+    const e14 = loadExp("other/14");
+    const d14 = e14.model.pca.sensitif;
+    const cfg14 = { ambang: d14.ambang, ketekunan_detik: d14.ketekunan_detik, tahan_detik: d14.tahan_detik };
+    const r14 = evaluateExperiment(e14, d14.skor, cfg14);
+    const i = await pos();
+    const shown = await page.locator("#pemutar").getAttribute("data-state");
+    ok(shown === stateAt(e14, d14.skor, cfg14, r14, i), `${tag}: status tidak sinkron setelah reset batas (${shown} pada baris ${i})`);
+  }
+
+  // Kondisi ekstrem 3: ganti rekaman saat pemutaran berjalan. Pemutar lama berhenti, yang baru siap tanpa kesalahan.
+  await page.locator("#putar").click();
+  await page.waitForTimeout(200);
+  await page.selectOption("#pilih-eksperimen", "valve2/0");
+  await page.waitForURL(/exp=valve2/);
+  await waitView(page, "konsol");
+  await page.waitForTimeout(300);
+  const nNew = loadExp("valve2/0").baris;
+  ok((await page.locator("#pemutar").count()) === 1, `${tag}: ada lebih dari satu pemutar setelah ganti rekaman`);
+  ok((await page.locator("#pemutar").getAttribute("data-playing")) === "false", `${tag}: rekaman baru langsung berputar sendiri`);
+  ok((await pos()) === nNew - 1, `${tag}: posisi rekaman baru tidak siap (${await pos()})`);
+  // Kondisi ekstrem 4: ganti model saat berputar, lalu pindah halaman saat berputar.
+  await page.locator("#putar").click();
+  await page.getByRole("button", { name: "Ambang statistik", exact: true }).first().click();
+  await waitView(page, "konsol");
+  ok(page.url().includes("model=ambang_statistik") && (await page.locator("#pemutar").getAttribute("data-playing")) === "false", `${tag}: ganti model saat berputar tidak bersih`);
+  await page.locator("#putar").click();
+  await page.locator('.rail a[data-view="kinerja"]').click();
+  await waitView(page, "kinerja");
+  ok((await page.locator("#pemutar").count()) === 0, `${tag}: pemutar tertinggal setelah pindah halaman`);
+
+  // Navigasi papan ketik: tautan menu bisa difokus dan dibuka dengan Enter.
+  await page.locator('.rail a[data-view="kesalahan"]').focus();
+  await page.keyboard.press("Enter");
+  await waitView(page, "kesalahan");
+  ok(page.url().includes("#/kesalahan"), `${tag}: Enter pada menu tidak membuka halaman`);
+  await page.keyboard.press("Tab");
+  ok(await page.evaluate(() => document.activeElement !== document.body), `${tag}: fokus papan ketik hilang setelah pindah halaman`);
+
   // Jeda saat tab disembunyikan dan tidak ada kesalahan konsol.
   for (const p of problems) ok(false, `${tag}: ${p}`);
   await ctx.close();
@@ -278,7 +357,7 @@ for (const width of [1440, 375]) {
 await browser.close();
 server.close();
 if (failures.length) {
-  console.error(`\n${failures.length} kegagalan`);
+  console.error(`\n${failures.length} kegagalan dari ${checks} pemeriksaan`);
   process.exit(1);
 }
-console.log("Semua uji e2e lulus");
+console.log(`Semua uji e2e lulus: ${checks} pemeriksaan`);

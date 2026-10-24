@@ -15,6 +15,10 @@ cd web && npm ci && npm test && npm run build && npm run e2e
 
 `pytest` memuat tes yang menghitung ulang metrik uji dari konfigurasi tersimpan dan membandingkannya dengan `reports/results.json` (selisih nol). `npm test` membandingkan alarm yang dihitung browser dengan hasil Python.
 
+## Bukti reproduksi terakhir
+
+24 Oktober 2026: `sentinel evaluate` dijalankan ulang dari CSV mentah (3 menit 6 detik, satu inti CPU). `reports/results.json` hasil ulang identik byte per byte dengan versi di repo (SHA-256 berawalan `7f9284630a005a22`), dan semua berkas `web/public/data` identik. Sel pembanding notebook Kaggle, dijalankan lokal terhadap hasil ulang itu, menyatakan 12 dari 12 nilai F1 sama.
+
 ## Kaggle
 
 1. Buat notebook baru di Kaggle, impor `notebooks/kaggle_train.ipynb`.
@@ -25,7 +29,7 @@ Notebook ini belum pernah dijalankan oleh pembuat repo karena Kaggle tidak dapat
 
 ## Versi yang dipakai
 
-Python 3.13, NumPy 2.5, pandas 3.1, scikit-learn 1.9, SciPy 1.18. Batas versi minimum ada di `pyproject.toml`.
+Python 3.13.17, NumPy 2.5.4, pandas 3.1.0, scikit-learn 1.9.1, SciPy 1.18.1, Node.js 22. Batas versi minimum ada di `pyproject.toml`.
 
 ## Keluaran
 
