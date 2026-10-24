@@ -85,8 +85,8 @@ export function renderPerformance(root, summary, state, setState) {
       h("td", { class: "n" }, num(t.alarm_palsu_per_jam, 1), h("div", { class: "s" }, ci(t.selang_95.alarm_palsu_per_jam, 1))),
     );
   });
-  root.append(h("div", { class: "table-wrap", tabindex: 0, role: "region", "aria-label": "Tabel. Geser ke samping untuk melihat kolom lain." }, h("table", null,
-    h("caption", null, `${SCHEME_LABEL[scheme]}, mode ${MODE_LABEL[mode].toLowerCase()}. ${rows[0].r.uji.n_eksperimen} rekaman uji, ${num(rows[0].r.uji.jam_normal_teramati, 1)} jam waktu normal teramati. Ketepatan: bagian waktu alarm yang memang anomali. Cakupan: bagian waktu anomali yang memicu alarm. Waktu sampai alarm: nilai tengah dari semua kejadian yang tertangkap. Angka kecil di bawah nilai adalah rentang 95 persen.`),
+  root.append(h("p", { class: "table-note" }, `${rows[0].r.uji.n_eksperimen} rekaman uji, ${num(rows[0].r.uji.jam_normal_teramati, 1)} jam waktu normal teramati. Ketepatan: bagian waktu alarm yang memang anomali. Cakupan: bagian waktu anomali yang memicu alarm. Waktu sampai alarm: nilai tengah dari semua kejadian yang tertangkap. Angka kecil di bawah nilai adalah rentang 95 persen.`), h("div", { class: "table-wrap", tabindex: 0, role: "region", "aria-label": "Tabel. Geser ke samping untuk melihat kolom lain." }, h("table", null,
+    h("caption", null, `${SCHEME_LABEL[scheme]}, mode ${MODE_LABEL[mode].toLowerCase()}`),
     h("thead", null, h("tr", null, h("th", { scope: "col" }, "Model"), th("Skor F1", 1), th("Ketepatan alarm (presisi)", 1), th("Cakupan anomali (recall)", 1), th("PR-AUC", 1), th("Kejadian tertangkap", 1), th("Waktu sampai alarm", 1), th("Alarm palsu per jam", 1))),
     h("tbody", null, body),
   )));
@@ -117,8 +117,9 @@ export function renderPerformance(root, summary, state, setState) {
     }),
   ));
   root.append(h("h2", null, "Hasil per rekaman uji"),
+    h("p", { class: "table-note" }, "Satu kejadian anomali per rekaman. Alarm hanya dihitung benar bila mulai menyala saat kejadian berlangsung. Waktu 0 detik berarti alarm sudah menyala sebelum kejadian dan masih menyala saat kejadian dimulai; alarm itu juga dihitung palsu."),
     h("div", { class: "table-wrap", tabindex: 0, role: "region", "aria-label": "Tabel. Geser ke samping untuk melihat kolom lain." }, h("table", null,
-      h("caption", null, "Satu kejadian anomali per rekaman. Alarm hanya dihitung benar bila mulai menyala saat kejadian berlangsung. Waktu 0 detik berarti alarm sudah menyala sebelum kejadian dan masih menyala saat kejadian dimulai; alarm itu juga dihitung palsu."),
+      h("caption", null, "Hasil per rekaman uji untuk setiap model"),
       h("thead", null, h("tr", null, h("th", { scope: "col" }, "Rekaman"), models.map((m) => h("th", { scope: "col" }, MODEL_LABEL[m])))),
       h("tbody", null, matrix))));
   growBars(root);

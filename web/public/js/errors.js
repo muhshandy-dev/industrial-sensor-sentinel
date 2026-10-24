@@ -54,8 +54,8 @@ export function renderErrors(root, summary, state, setState) {
   ];
   root.append(h("h2", null, "Temuan"), h("ul", { class: "clean" }, findings.map((f) => h("li", null, f))));
 
-  root.append(h("div", { class: "table-wrap", tabindex: 0, role: "region", "aria-label": "Tabel. Geser ke samping untuk melihat kolom lain." }, h("table", null,
-    h("caption", null, `Model ${MODEL_LABEL[state.model]}, mode ${MODE_LABEL[state.mode].toLowerCase()}. Besar perubahan: seberapa jauh sensor bergeser dibanding variasi normalnya. Tanpa alarm: bagian waktu anomali yang tidak memicu alarm. Alarm palsu: berapa kali alarm mulai menyala di luar kejadian.`),
+  root.append(h("p", { class: "table-note" }, "Besar perubahan: seberapa jauh sensor bergeser dibanding variasi normalnya. Tanpa alarm: bagian waktu anomali yang tidak memicu alarm. Alarm palsu: berapa kali alarm mulai menyala di luar kejadian."), h("div", { class: "table-wrap", tabindex: 0, role: "region", "aria-label": "Tabel. Geser ke samping untuk melihat kolom lain." }, h("table", null,
+    h("caption", null, `Model ${MODEL_LABEL[state.model]}, mode ${MODE_LABEL[state.mode].toLowerCase()}`),
     h("thead", null, h("tr", null,
       h("th", { scope: "col" }, "Rekaman"),
       h("th", { scope: "col" }, "Sensor paling berubah"),

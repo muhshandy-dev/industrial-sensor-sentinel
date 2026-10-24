@@ -24,6 +24,16 @@ Website statis tanpa build. Yang dipublikasikan adalah folder `web/public`.
 - Produksi: https://industrial-sensor-sentinel.pages.dev/ (di-deploy oleh pemilik repo dari branch `main`).
 - Sesi pengembangan tidak dapat membuka domain `pages.dev`, jadi isi situs live diperiksa oleh pemilik repo. Isi folder `web/public` di `main` adalah yang diuji e2e di CI.
 
+## Pemeriksaan setelah merge (sekitar 3 menit)
+
+1. Di dashboard Cloudflare, Workers and Pages, `industrial-sensor-sentinel`, tab Deployments: deployment Production teratas harus memakai commit terbaru di `main` dan berstatus Success.
+2. Buka https://industrial-sensor-sentinel.pages.dev/ di jendela penyamaran (incognito), lalu buka kelima menu: Ringkasan, Konsol, Kinerja, Kesalahan, Metode. Semua harus tampil tanpa halaman kosong.
+3. Di Konsol, tekan Putar, geser batas alarm, lalu ganti rekaman. Grafik harus bergerak tanpa tumpang tindih.
+4. Buka situs yang sama di ponsel dan coba ganti tema.
+5. Bila tampilan terlihat lama, muat ulang dengan Ctrl+Shift+R (atau Cmd+Shift+R di Mac).
+
+Tidak perlu token atau kunci apa pun untuk langkah ini.
+
 ## Status integrasi yang teramati (24 Oktober 2026)
 
 - Pada PR #2, check **Cloudflare Pages** berhasil dan bot Cloudflare memasang URL preview. Artinya integrasi Git proyek Pages `industrial-sensor-sentinel` tersambung dan deploy otomatis berjalan.

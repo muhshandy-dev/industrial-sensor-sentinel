@@ -10,7 +10,7 @@ Deteksi anomali dan peringatan dini sensor industri. Proyek ini melatih dan meni
 
 | Ringkasan (desktop) | Kinerja (tema terang) | Konsol (ponsel) |
 |---|---|---|
-| ![Ringkasan](docs/screenshots/ringkasan-1440-gelap.png) | ![Kinerja](docs/screenshots/kinerja-1440-terang.png) | ![Konsol di ponsel](docs/screenshots/konsol-375-gelap.png) |
+| ![Ringkasan](docs/screenshots/ringkasan-1440-gelap.png) | ![Kinerja](docs/screenshots/kinerja-1440-terang.png) | ![Konsol di ponsel](docs/screenshots/konsol-390-gelap.png) |
 
 ## Yang dikerjakan
 
@@ -77,17 +77,39 @@ make check                    # lint + tes
 cd web && npm ci && npm test && npm run build
 ```
 
-Detail ada di [docs/REPRODUCE.md](docs/REPRODUCE.md). Data dan model dijelaskan di [Data Card](docs/DATA_CARD.md) dan [Model Card](docs/MODEL_CARD.md).
+## Dokumentasi
+
+| Dokumen | Isi |
+|---|---|
+| [Laporan Evaluasi](docs/EVALUATION_REPORT.md) | definisi metrik, hasil uji, hitungan kesalahan, perbandingan dengan baseline, bukti reproduksi |
+| [Model Card](docs/MODEL_CARD.md) | model, penyetelan, konfigurasi terpilih, analisis kesalahan, keterbatasan |
+| [Data Card](docs/DATA_CARD.md) | sumber, lisensi, pemeriksaan data, risiko kebocoran |
+| [Panduan Reproduksi](docs/REPRODUCE.md) | langkah lokal dan Kaggle, versi pustaka |
+| [Arsitektur](docs/ARCHITECTURE.md) | alur data, modul, pengujian, deploy |
+| [Deploy Cloudflare](docs/DEPLOY_CLOUDFLARE.md) | pengaturan Pages dan pemeriksaan setelah deploy |
+| [Kartu Portofolio](docs/portfolio-card.md) | teks ringkas untuk portofolio |
+
+## Cara memakai website
+
+1. **Ringkasan:** hasil utama dan contoh satu rekaman uji.
+2. **Konsol:** pilih rekaman uji, model, dan mode, lalu tekan Putar. Lajur atas menunjukkan kejadian sebenarnya dan alarm. Geser batas alarm untuk melihat dampaknya. Semua tombol bisa dipakai dengan keyboard.
+3. **Kinerja:** perbandingan model, kurva presisi dan recall, dan dampak menggeser batas alarm.
+4. **Kesalahan:** kejadian terlewat dan alarm palsu per rekaman.
+5. **Metode:** cara data dibagi dan dinilai.
+
+## Kontribusi pengembang
+
+Proyek ini dikerjakan oleh Shandy (muhshandy-dev) bersama asisten AI (Claude Code). Shandy menetapkan tujuan, batasan, dan standar kejujuran proyek, membuat repo dan proyek Cloudflare Pages, meninjau hasil evaluasi dan tampilan di setiap tahap (termasuk meminta rombak desain), dan memutuskan setiap merge ke produksi. Kode, eksperimen, dan pengujian ditulis dengan bantuan asisten AI di bawah arahan dan review tersebut.
 
 ## Kualitas
 
 - Python: pytest (tes sintetis, tes data asli, tes reproduksi hasil), ruff, CI di Python 3.11 dan 3.13, pip-audit.
-- Website: tes paritas alarm browser terhadap hasil Python untuk 60 konfigurasi, tes paritas kurva presisi-recall dan sapuan batas alarm terhadap `reports/results.json`, tes sinkronisasi status pemutar dengan episode alarm pada lebih dari 40 ribu titik, tes Putar, Jeda, Mulai ulang, dan laju bingkai saat memutar, tes e2e Playwright di 320, 375, 768, dan 1440 piksel (tema gelap dan terang, juga dengan CPU diperlambat 4 kali), pemeriksaan aksesibilitas axe (WCAG 2 AA), CSP ketat, tanpa permintaan pihak ketiga, npm audit.
+- Website: tes paritas alarm browser terhadap hasil Python untuk 60 konfigurasi, tes paritas kurva presisi-recall dan sapuan batas alarm terhadap `reports/results.json`, tes sinkronisasi status pemutar dengan episode alarm pada lebih dari 40 ribu titik, tes Putar, Jeda, Mulai ulang, dan laju bingkai saat memutar, tes e2e Playwright dengan 178 pemeriksaan di 320, 375, 768, dan 1440 piksel (tema gelap dan terang, juga dengan CPU diperlambat 4 kali), termasuk kasus ekstrem: memutar sampai akhir, mengganti rekaman atau model saat memutar, dan menggeser batas alarm saat animasi berjalan, pemeriksaan aksesibilitas axe (WCAG 2 AA), CSP ketat, tanpa permintaan pihak ketiga, npm audit.
 - Pemeriksaan independen: `python tools/verify_published.py` menghitung ulang semua angka website dari CSV SKAB mentah tanpa memakai modul metrik proyek, lalu memeriksa pembagian data (uji selalu rekaman terbaru per sesi, kalibrasi tanpa label anomali). Dijalankan di CI.
 
 ## Status dan batasan yang jujur
 
-- Hasil dihitung di sesi pengembangan (CPU). Notebook Kaggle ada di `notebooks/kaggle_train.ipynb`, tetapi **belum dijalankan di Kaggle** karena Kaggle tidak dapat dijangkau dari sesi ini. Notebook membandingkan hasilnya dengan `reports/results.json`.
+- Hasil dihitung di sesi pengembangan (CPU) dan sudah dijalankan ulang penuh dari data mentah dengan hasil identik byte per byte (lihat [Laporan Evaluasi](docs/EVALUATION_REPORT.md)). Notebook Kaggle ada di `notebooks/kaggle_train.ipynb`, tetapi **belum dijalankan di Kaggle** karena Kaggle tidak dapat dijangkau dari sesi ini. Notebook membandingkan hasilnya dengan `reports/results.json`.
 - Website menampilkan **hasil batch**, bukan inferensi langsung. Yang dihitung ulang di browser hanya aturan alarm (ambang, ketekunan, penahanan) dari skor tersimpan.
 - Website di-deploy ke Cloudflare Pages oleh pemilik repo di https://industrial-sensor-sentinel.pages.dev/. Sesi pengembangan tidak dapat membuka domain pages.dev, jadi pemeriksaan visual dan e2e dilakukan pada salinan lokal folder `web/public` yang sama. Panduan dan cara memperbaiki status integrasi Git ada di [docs/DEPLOY_CLOUDFLARE.md](docs/DEPLOY_CLOUDFLARE.md).
 - Hasil uji sempat dilihat selama pengembangan. Setelah itu definisi alarm diperketat (alarm yang sudah menyala sebelum kejadian dihitung palsu) dan rentang ambang diperluas. Tidak ada parameter yang dipilih memakai rekaman uji. Rinciannya di [Model Card](docs/MODEL_CARD.md).
