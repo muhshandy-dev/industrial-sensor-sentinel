@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Industrial Sensor Sentinel</title>
+  <meta name="description" content="Deteksi anomali dan peringatan dini sensor industri. Hasil batch dari data SKAB, dengan evaluasi per eksperimen.">
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="skip" href="#utama">Lewati ke konten utama</a>
+  <div class="shell">
+    <header class="topbar" role="banner">
+      <a class="brand" href="#/ringkasan" aria-label="Industrial Sensor Sentinel, ke Ringkasan">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" focusable="false">
+          <rect x="1.5" y="1.5" width="29" height="29" rx="7" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M5 18h5l3-8 4 14 3-9 2 3h5" fill="none" stroke="var(--signal)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="brand-text">Industrial Sensor Sentinel</span>
+      </a>
+      <p class="status-chip" role="note"><span class="dot" aria-hidden="true"></span>Hasil batch dari data SKAB. Bukan pemantauan langsung.</p>
+      <button class="btn ghost" id="tema" type="button" aria-pressed="false">Tema terang</button>
+    </header>
+    <nav class="rail" aria-label="Menu utama" id="menu"></nav>
+    <main id="utama" tabindex="-1" aria-live="polite"></main>
+    <footer class="foot">
+      <p>Data: Skoltech Anomaly Benchmark (SKAB), lisensi GPL-3.0. Kode sumber dan dokumentasi ada di <a href="https://github.com/muhshandy-dev/industrial-sensor-sentinel" rel="noopener">GitHub</a>.</p>
+    </footer>
+  </div>
+  <noscript><p class="noscript">Halaman ini membutuhkan JavaScript untuk menampilkan grafik.</p></noscript>
+</body>
+</html>

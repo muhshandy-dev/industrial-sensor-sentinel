@@ -1,0 +1,2468 @@
+{
+  "data": {
+    "commit": "b2c0d46c2971dcbfe71e26087b6d231998bb91c2",
+    "lisensi": "GPL-3.0",
+    "repo": "waico/SKAB"
+  },
+  "grid": {
+    "ambang": [
+      0.05,
+      100.0
+    ],
+    "batas_alarm_palsu_per_jam_mode_hemat": 2.0,
+    "ketekunan_detik": [
+      1,
+      5,
+      15
+    ],
+    "tahan_detik": [
+      0,
+      10,
+      30
+    ]
+  },
+  "kalibrasi_awal_detik": 300,
+  "pembagian": {
+    "purge": [
+      "other/11",
+      "valve1/13"
+    ],
+    "session_of": {
+      "other/1": "2020-03-01",
+      "other/10": "2020-02-08",
+      "other/11": "2020-02-08",
+      "other/12": "2020-02-08",
+      "other/13": "2020-02-08",
+      "other/14": "2020-02-08",
+      "other/2": "2020-03-01",
+      "other/3": "2020-03-01",
+      "other/4": "2020-03-01",
+      "other/5": "2020-02-08",
+      "other/6": "2020-02-08",
+      "other/7": "2020-02-08",
+      "other/8": "2020-02-08",
+      "other/9": "2020-02-08",
+      "valve1/0": "2020-03-09",
+      "valve1/1": "2020-03-09",
+      "valve1/10": "2020-03-09",
+      "valve1/11": "2020-03-09",
+      "valve1/12": "2020-03-09",
+      "valve1/13": "2020-03-09",
+      "valve1/14": "2020-03-09",
+      "valve1/15": "2020-03-09",
+      "valve1/2": "2020-03-09",
+      "valve1/3": "2020-03-09",
+      "valve1/4": "2020-03-09",
+      "valve1/5": "2020-03-09",
+      "valve1/6": "2020-03-09",
+      "valve1/7": "2020-03-09",
+      "valve1/8": "2020-03-09",
+      "valve1/9": "2020-03-09",
+      "valve2/0": "2020-03-09",
+      "valve2/1": "2020-03-09",
+      "valve2/2": "2020-03-09",
+      "valve2/3": "2020-03-09"
+    },
+    "test": [
+      "other/12",
+      "other/13",
+      "other/14",
+      "other/4",
+      "valve1/14",
+      "valve1/15",
+      "valve2/0",
+      "valve2/1",
+      "valve2/2",
+      "valve2/3"
+    ],
+    "train": [
+      "other/5",
+      "other/6",
+      "other/7",
+      "other/8",
+      "other/1",
+      "other/2",
+      "valve1/0",
+      "valve1/1",
+      "valve1/2",
+      "valve1/3",
+      "valve1/4",
+      "valve1/5",
+      "valve1/6",
+      "valve1/7",
+      "valve1/8",
+      "valve1/9"
+    ],
+    "val": [
+      "other/9",
+      "other/10",
+      "other/3",
+      "valve1/10",
+      "valve1/11",
+      "valve1/12"
+    ]
+  },
+  "perbandingan_berpasangan": {
+    "p1_kalibrasi_awal|hemat_alarm|isolation_forest_dikurangi_ambang_statistik": {
+      "selang_95": [
+        -0.6023596297302304,
+        -0.09805751277873377
+      ],
+      "selisih_f1": -0.32646108352606645
+    },
+    "p1_kalibrasi_awal|hemat_alarm|pca_dikurangi_ambang_statistik": {
+      "selang_95": [
+        -0.05230355285647399,
+        0.1416916791188192
+      ],
+      "selisih_f1": 0.04814589989523477
+    },
+    "p1_kalibrasi_awal|sensitif|isolation_forest_dikurangi_ambang_statistik": {
+      "selang_95": [
+        -0.013831550469393217,
+        0.1612309144358442
+      ],
+      "selisih_f1": 0.06293834945380306
+    },
+    "p1_kalibrasi_awal|sensitif|pca_dikurangi_ambang_statistik": {
+      "selang_95": [
+        0.0031531101129434335,
+        0.07068108636111263
+      ],
+      "selisih_f1": 0.03850743823113867
+    },
+    "p2_riwayat_normal|hemat_alarm|isolation_forest_dikurangi_ambang_statistik": {
+      "selang_95": [
+        -0.7429021097175109,
+        -0.1655494071597325
+      ],
+      "selisih_f1": -0.4573347682188552
+    },
+    "p2_riwayat_normal|hemat_alarm|pca_dikurangi_ambang_statistik": {
+      "selang_95": [
+        -0.19406488492605886,
+        0.1251045982612673
+      ],
+      "selisih_f1": -0.05566408956864666
+    },
+    "p2_riwayat_normal|sensitif|isolation_forest_dikurangi_ambang_statistik": {
+      "selang_95": [
+        -0.2117646073858911,
+        0.0967305783003176
+      ],
+      "selisih_f1": -0.03941503019724124
+    },
+    "p2_riwayat_normal|sensitif|pca_dikurangi_ambang_statistik": {
+      "selang_95": [
+        -0.046013199376290115,
+        0.1103026029089745
+      ],
+      "selisih_f1": 0.03779073765081231
+    }
+  },
+  "protokol": {
+    "p1_kalibrasi_awal": {
+      "ambang_statistik": {
+        "hemat_alarm": {
+          "ambang": 7.238,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.5986,
+            "10": 0.6674,
+            "30": 0.5799
+          },
+          "jendela_fitur": 10,
+          "ketekunan_detik": 15,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 1.1380400421496313,
+            "eksperimen": [
+              "other/5",
+              "other/6",
+              "other/7",
+              "other/8",
+              "other/1",
+              "valve1/0",
+              "valve1/1",
+              "valve1/2",
+              "valve1/3",
+              "valve1/4",
+              "valve1/5",
+              "valve1/6",
+              "valve1/7",
+              "valve1/8",
+              "valve1/9",
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.6674222568534391,
+            "far_persen": 12.817971589032046,
+            "jam_normal_teramati": 2.636111111111111,
+            "mar_persen": 42.841543314729435,
+            "n_eksperimen": 21,
+            "pr_auc": 0.8190862706203365,
+            "precision": 0.8018723404255319,
+            "recall": 0.5715845668527056,
+            "recall_kejadian": 0.7619047619047619,
+            "tunda_deteksi_median_detik": 49.0
+          },
+          "tahan_detik": 30,
+          "uji": {
+            "alarm_palsu_per_jam": 2.5087108013937285,
+            "f1": 0.6972252031273953,
+            "far_persen": 16.139318126073093,
+            "jam_normal_teramati": 1.1958333333333333,
+            "mar_persen": 36.6750208855472,
+            "n_eksperimen": 10,
+            "pr_auc": 0.8382502103943552,
+            "precision": 0.7755798090040927,
+            "prevalensi_anomali": 0.46830985915492956,
+            "recall": 0.633249791144528,
+            "recall_kejadian": 0.8,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                0.0,
+                6.556295787362638
+              ],
+              "f1": [
+                0.5502063559999946,
+                0.810419744787706
+              ],
+              "recall_kejadian": [
+                0.6,
+                1.0
+              ]
+            },
+            "tunda_deteksi_median_detik": 69.0
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 91.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 0,
+              "fn": 84,
+              "fp": 171,
+              "normal_hours": 0.12833333333333333,
+              "tn": 268,
+              "tp": 225
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 0,
+              "fn": 265,
+              "fp": 0,
+              "normal_hours": 0.10555555555555556,
+              "tn": 358,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 28.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 0,
+              "fn": 27,
+              "fp": 32,
+              "normal_hours": 0.08833333333333333,
+              "tn": 271,
+              "tp": 275
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 0,
+              "fn": 395,
+              "fp": 0,
+              "normal_hours": 0.145,
+              "tn": 496,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 77.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 0,
+              "fn": 77,
+              "fp": 0,
+              "normal_hours": 0.12833333333333333,
+              "tn": 440,
+              "tp": 322
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 2,
+              "fn": 0,
+              "fp": 254,
+              "normal_hours": 0.12916666666666668,
+              "tn": 192,
+              "tp": 404
+            },
+            {
+              "delay_seconds": 66.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 0,
+              "fn": 205,
+              "fp": 158,
+              "normal_hours": 0.1275,
+              "tn": 273,
+              "tp": 189
+            },
+            {
+              "delay_seconds": 57.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 0,
+              "fn": 56,
+              "fp": 0,
+              "normal_hours": 0.1275,
+              "tn": 430,
+              "tp": 277
+            },
+            {
+              "delay_seconds": 84.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 1,
+              "fn": 127,
+              "fp": 43,
+              "normal_hours": 0.12777777777777777,
+              "tn": 391,
+              "tp": 268
+            },
+            {
+              "delay_seconds": 72.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 0,
+              "fn": 81,
+              "fp": 0,
+              "normal_hours": 0.08833333333333333,
+              "tn": 300,
+              "tp": 314
+            }
+          ]
+        },
+        "sensitif": {
+          "ambang": 4.165,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.7357,
+            "10": 0.7811,
+            "30": 0.7437
+          },
+          "jendela_fitur": 10,
+          "ketekunan_detik": 1,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 15.173867228661749,
+            "eksperimen": [
+              "other/5",
+              "other/6",
+              "other/7",
+              "other/8",
+              "other/1",
+              "valve1/0",
+              "valve1/1",
+              "valve1/2",
+              "valve1/3",
+              "valve1/4",
+              "valve1/5",
+              "valve1/6",
+              "valve1/7",
+              "valve1/8",
+              "valve1/9",
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.781065815324165,
+            "far_persen": 18.555225195463056,
+            "jam_normal_teramati": 2.636111111111111,
+            "mar_persen": 22.822130550837176,
+            "n_eksperimen": 21,
+            "pr_auc": 0.8190862706203365,
+            "precision": 0.7905791697738006,
+            "recall": 0.7717786944916283,
+            "recall_kejadian": 0.9047619047619048,
+            "tunda_deteksi_median_detik": 16.0
+          },
+          "tahan_detik": 0,
+          "uji": {
+            "alarm_palsu_per_jam": 6.689895470383275,
+            "f1": 0.7298105682951146,
+            "far_persen": 21.29016433652195,
+            "jam_normal_teramati": 1.1958333333333333,
+            "mar_persen": 28.654970760233915,
+            "n_eksperimen": 10,
+            "pr_auc": 0.8382502103943552,
+            "precision": 0.746938775510204,
+            "prevalensi_anomali": 0.46830985915492956,
+            "recall": 0.7134502923976608,
+            "recall_kejadian": 0.9,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                1.7907991913472252,
+                13.552832230612191
+              ],
+              "f1": [
+                0.6015130879921996,
+                0.8167813567864244
+              ],
+              "recall_kejadian": [
+                0.7,
+                1.0
+              ]
+            },
+            "tunda_deteksi_median_detik": 53.0
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 71.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 1,
+              "fn": 67,
+              "fp": 176,
+              "normal_hours": 0.12833333333333333,
+              "tn": 263,
+              "tp": 242
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 0,
+              "fn": 265,
+              "fp": 0,
+              "normal_hours": 0.10555555555555556,
+              "tn": 358,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 5.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 0,
+              "fn": 8,
+              "fp": 32,
+              "normal_hours": 0.08833333333333333,
+              "tn": 271,
+              "tp": 294
+            },
+            {
+              "delay_seconds": 103.0,
+              "event_detected": true,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 0,
+              "fn": 366,
+              "fp": 0,
+              "normal_hours": 0.145,
+              "tn": 496,
+              "tp": 29
+            },
+            {
+              "delay_seconds": 55.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 0,
+              "fn": 83,
+              "fp": 0,
+              "normal_hours": 0.12833333333333333,
+              "tn": 440,
+              "tp": 316
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 4,
+              "fn": 0,
+              "fp": 310,
+              "normal_hours": 0.12916666666666668,
+              "tn": 136,
+              "tp": 404
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 1,
+              "fn": 3,
+              "fp": 175,
+              "normal_hours": 0.1275,
+              "tn": 256,
+              "tp": 391
+            },
+            {
+              "delay_seconds": 38.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 1,
+              "fn": 55,
+              "fp": 82,
+              "normal_hours": 0.1275,
+              "tn": 348,
+              "tp": 278
+            },
+            {
+              "delay_seconds": 59.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 1,
+              "fn": 91,
+              "fp": 93,
+              "normal_hours": 0.12777777777777777,
+              "tn": 341,
+              "tp": 304
+            },
+            {
+              "delay_seconds": 53.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 0,
+              "fn": 91,
+              "fp": 0,
+              "normal_hours": 0.08833333333333333,
+              "tn": 300,
+              "tp": 304
+            }
+          ]
+        }
+      },
+      "isolation_forest": {
+        "hemat_alarm": {
+          "ambang": 0.691,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.4738,
+            "10": 0.1424,
+            "30": 0.1263
+          },
+          "jendela_fitur": 1,
+          "ketekunan_detik": 15,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 1.8967334035827186,
+            "eksperimen": [
+              "other/5",
+              "other/6",
+              "other/7",
+              "other/8",
+              "other/1",
+              "valve1/0",
+              "valve1/1",
+              "valve1/2",
+              "valve1/3",
+              "valve1/4",
+              "valve1/5",
+              "valve1/6",
+              "valve1/7",
+              "valve1/8",
+              "valve1/9",
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.47378979502834717,
+            "far_persen": 5.583085563263958,
+            "jam_normal_teramati": 2.636111111111111,
+            "mar_persen": 67.04683329289007,
+            "n_eksperimen": 21,
+            "pr_auc": 0.6511866360182765,
+            "precision": 0.84269314303444,
+            "recall": 0.32953166707109927,
+            "recall_kejadian": 0.5714285714285714,
+            "tunda_deteksi_median_detik": 66.0
+          },
+          "tahan_detik": 30,
+          "uji": {
+            "alarm_palsu_per_jam": 1.6724738675958188,
+            "f1": 0.3707641196013289,
+            "far_persen": 2.1339220014716704,
+            "jam_normal_teramati": 1.1958333333333333,
+            "mar_persen": 76.69172932330827,
+            "n_eksperimen": 10,
+            "pr_auc": 0.7061292073621313,
+            "precision": 0.9058441558441559,
+            "prevalensi_anomali": 0.46830985915492956,
+            "recall": 0.23308270676691728,
+            "recall_kejadian": 0.4,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                0.0,
+                5.002402833379042
+              ],
+              "f1": [
+                0.10155594405594406,
+                0.6238956717775573
+              ],
+              "recall_kejadian": [
+                0.1,
+                0.7
+              ]
+            },
+            "tunda_deteksi_median_detik": 106.5
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 112.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 0,
+              "fn": 103,
+              "fp": 17,
+              "normal_hours": 0.12833333333333333,
+              "tn": 422,
+              "tp": 206
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 0,
+              "fn": 265,
+              "fp": 0,
+              "normal_hours": 0.10555555555555556,
+              "tn": 358,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 28.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 0,
+              "fn": 27,
+              "fp": 32,
+              "normal_hours": 0.08833333333333333,
+              "tn": 271,
+              "tp": 275
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 0,
+              "fn": 395,
+              "fp": 0,
+              "normal_hours": 0.145,
+              "tn": 496,
+              "tp": 0
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 0,
+              "fn": 399,
+              "fp": 0,
+              "normal_hours": 0.12833333333333333,
+              "tn": 440,
+              "tp": 0
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 0,
+              "fn": 404,
+              "fp": 0,
+              "normal_hours": 0.12916666666666668,
+              "tn": 446,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 299.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 2,
+              "fn": 322,
+              "fp": 38,
+              "normal_hours": 0.1275,
+              "tn": 393,
+              "tp": 72
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 0,
+              "fn": 333,
+              "fp": 0,
+              "normal_hours": 0.1275,
+              "tn": 430,
+              "tp": 0
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 0,
+              "fn": 395,
+              "fp": 0,
+              "normal_hours": 0.12777777777777777,
+              "tn": 434,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 101.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 0,
+              "fn": 111,
+              "fp": 0,
+              "normal_hours": 0.08833333333333333,
+              "tn": 300,
+              "tp": 284
+            }
+          ]
+        },
+        "sensitif": {
+          "ambang": 0.057,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.704,
+            "10": 0.6434,
+            "30": 0.6252
+          },
+          "jendela_fitur": 1,
+          "ketekunan_detik": 15,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 11.001053740779769,
+            "eksperimen": [
+              "other/5",
+              "other/6",
+              "other/7",
+              "other/8",
+              "other/1",
+              "valve1/0",
+              "valve1/1",
+              "valve1/2",
+              "valve1/3",
+              "valve1/4",
+              "valve1/5",
+              "valve1/6",
+              "valve1/7",
+              "valve1/8",
+              "valve1/9",
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.7039731393396753,
+            "far_persen": 36.75806629225856,
+            "jam_normal_teramati": 2.636111111111111,
+            "mar_persen": 23.683571948556175,
+            "n_eksperimen": 21,
+            "pr_auc": 0.6511866360182765,
+            "precision": 0.6533028666389696,
+            "recall": 0.7631642805144383,
+            "recall_kejadian": 1.0,
+            "tunda_deteksi_median_detik": 14.0
+          },
+          "tahan_detik": 30,
+          "uji": {
+            "alarm_palsu_per_jam": 8.362369337979095,
+            "f1": 0.7927489177489176,
+            "far_persen": 21.36374785381408,
+            "jam_normal_teramati": 1.1958333333333333,
+            "mar_persen": 18.40712893344472,
+            "n_eksperimen": 10,
+            "pr_auc": 0.7061292073621313,
+            "precision": 0.7708497763746383,
+            "prevalensi_anomali": 0.46830985915492956,
+            "recall": 0.8159287106655527,
+            "recall_kejadian": 1.0,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                3.506028863281875,
+                13.777599827521605
+              ],
+              "f1": [
+                0.7015735302343793,
+                0.863443294972949
+              ],
+              "recall_kejadian": [
+                1.0,
+                1.0
+              ]
+            },
+            "tunda_deteksi_median_detik": 39.0
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 1.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 3,
+              "fn": 1,
+              "fp": 373,
+              "normal_hours": 0.12833333333333333,
+              "tn": 66,
+              "tp": 308
+            },
+            {
+              "delay_seconds": 169.0,
+              "event_detected": true,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 2,
+              "fn": 200,
+              "fp": 63,
+              "normal_hours": 0.10555555555555556,
+              "tn": 295,
+              "tp": 65
+            },
+            {
+              "delay_seconds": 8.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 1,
+              "fn": 8,
+              "fp": 67,
+              "normal_hours": 0.08833333333333333,
+              "tn": 236,
+              "tp": 294
+            },
+            {
+              "delay_seconds": 92.0,
+              "event_detected": true,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 0,
+              "fn": 151,
+              "fp": 0,
+              "normal_hours": 0.145,
+              "tn": 496,
+              "tp": 244
+            },
+            {
+              "delay_seconds": 63.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 0,
+              "fn": 65,
+              "fp": 0,
+              "normal_hours": 0.12833333333333333,
+              "tn": 440,
+              "tp": 334
+            },
+            {
+              "delay_seconds": 15.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 1,
+              "fn": 34,
+              "fp": 67,
+              "normal_hours": 0.12916666666666668,
+              "tn": 379,
+              "tp": 370
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 1,
+              "fn": 50,
+              "fp": 187,
+              "normal_hours": 0.1275,
+              "tn": 244,
+              "tp": 344
+            },
+            {
+              "delay_seconds": 64.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 0,
+              "fn": 91,
+              "fp": 0,
+              "normal_hours": 0.1275,
+              "tn": 430,
+              "tp": 242
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 2,
+              "fn": 2,
+              "fp": 78,
+              "normal_hours": 0.12777777777777777,
+              "tn": 356,
+              "tp": 393
+            },
+            {
+              "delay_seconds": 63.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 0,
+              "fn": 59,
+              "fp": 36,
+              "normal_hours": 0.08833333333333333,
+              "tn": 264,
+              "tp": 336
+            }
+          ]
+        }
+      },
+      "pca": {
+        "hemat_alarm": {
+          "ambang": 21.867,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.6201,
+            "10": 0.6887,
+            "30": 0.6941
+          },
+          "jendela_fitur": 30,
+          "ketekunan_detik": 1,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 1.8967334035827186,
+            "eksperimen": [
+              "other/5",
+              "other/6",
+              "other/7",
+              "other/8",
+              "other/1",
+              "valve1/0",
+              "valve1/1",
+              "valve1/2",
+              "valve1/3",
+              "valve1/4",
+              "valve1/5",
+              "valve1/6",
+              "valve1/7",
+              "valve1/8",
+              "valve1/9",
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.6941110801004745,
+            "far_persen": 12.289395441030724,
+            "jam_normal_teramati": 2.636111111111111,
+            "mar_persen": 39.650570249939335,
+            "n_eksperimen": 21,
+            "pr_auc": 0.8261834624208645,
+            "precision": 0.8167487684729065,
+            "recall": 0.6034942975006067,
+            "recall_kejadian": 0.8095238095238095,
+            "tunda_deteksi_median_detik": 47.0
+          },
+          "tahan_detik": 30,
+          "uji": {
+            "alarm_palsu_per_jam": 1.6724738675958188,
+            "f1": 0.7453711030226301,
+            "far_persen": 9.14888398332107,
+            "jam_normal_teramati": 1.1958333333333333,
+            "mar_persen": 34.41938178780284,
+            "n_eksperimen": 10,
+            "pr_auc": 0.81251160005905,
+            "precision": 0.8632697947214076,
+            "prevalensi_anomali": 0.46830985915492956,
+            "recall": 0.6558061821219716,
+            "recall_kejadian": 0.8,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                0.0,
+                5.17368368198916
+              ],
+              "f1": [
+                0.5575207928082454,
+                0.8679534518818659
+              ],
+              "recall_kejadian": [
+                0.6,
+                1.0
+              ]
+            },
+            "tunda_deteksi_median_detik": 58.0
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 75.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 0,
+              "fn": 71,
+              "fp": 171,
+              "normal_hours": 0.12833333333333333,
+              "tn": 268,
+              "tp": 238
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 0,
+              "fn": 265,
+              "fp": 0,
+              "normal_hours": 0.10555555555555556,
+              "tn": 358,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 17.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 0,
+              "fn": 16,
+              "fp": 32,
+              "normal_hours": 0.08833333333333333,
+              "tn": 271,
+              "tp": 286
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 0,
+              "fn": 395,
+              "fp": 0,
+              "normal_hours": 0.145,
+              "tn": 496,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 71.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 0,
+              "fn": 73,
+              "fp": 0,
+              "normal_hours": 0.12833333333333333,
+              "tn": 440,
+              "tp": 326
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 2,
+              "fn": 0,
+              "fp": 90,
+              "normal_hours": 0.12916666666666668,
+              "tn": 356,
+              "tp": 404
+            },
+            {
+              "delay_seconds": 29.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 0,
+              "fn": 37,
+              "fp": 69,
+              "normal_hours": 0.1275,
+              "tn": 362,
+              "tp": 357
+            },
+            {
+              "delay_seconds": 56.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 0,
+              "fn": 52,
+              "fp": 8,
+              "normal_hours": 0.1275,
+              "tn": 422,
+              "tp": 281
+            },
+            {
+              "delay_seconds": 78.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 0,
+              "fn": 271,
+              "fp": 0,
+              "normal_hours": 0.12777777777777777,
+              "tn": 434,
+              "tp": 124
+            },
+            {
+              "delay_seconds": 60.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 0,
+              "fn": 56,
+              "fp": 3,
+              "normal_hours": 0.08833333333333333,
+              "tn": 297,
+              "tp": 339
+            }
+          ]
+        },
+        "sensitif": {
+          "ambang": 12.581,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.6952,
+            "10": 0.771,
+            "30": 0.7716
+          },
+          "jendela_fitur": 30,
+          "ketekunan_detik": 1,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 4.931506849315069,
+            "eksperimen": [
+              "other/5",
+              "other/6",
+              "other/7",
+              "other/8",
+              "other/1",
+              "valve1/0",
+              "valve1/1",
+              "valve1/2",
+              "valve1/3",
+              "valve1/4",
+              "valve1/5",
+              "valve1/6",
+              "valve1/7",
+              "valve1/8",
+              "valve1/9",
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.7715959004392386,
+            "far_persen": 20.10791763021694,
+            "jam_normal_teramati": 2.636111111111111,
+            "mar_persen": 23.271050715845668,
+            "n_eksperimen": 21,
+            "pr_auc": 0.8261834624208645,
+            "precision": 0.7759509202453988,
+            "recall": 0.7672894928415434,
+            "recall_kejadian": 0.8571428571428571,
+            "tunda_deteksi_median_detik": 15.0
+          },
+          "tahan_detik": 30,
+          "uji": {
+            "alarm_palsu_per_jam": 1.6724738675958188,
+            "f1": 0.7683180065262533,
+            "far_persen": 13.760117733627666,
+            "jam_normal_teramati": 1.1958333333333333,
+            "mar_persen": 27.87524366471735,
+            "n_eksperimen": 10,
+            "pr_auc": 0.81251160005905,
+            "precision": 0.8219612821326563,
+            "prevalensi_anomali": 0.46830985915492956,
+            "recall": 0.7212475633528265,
+            "recall_kejadian": 0.8,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                0.0,
+                5.17368368198916
+              ],
+              "f1": [
+                0.6117045049076875,
+                0.8696048449238649
+              ],
+              "recall_kejadian": [
+                0.6,
+                1.0
+              ]
+            },
+            "tunda_deteksi_median_detik": 55.0
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 72.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 0,
+              "fn": 68,
+              "fp": 171,
+              "normal_hours": 0.12833333333333333,
+              "tn": 268,
+              "tp": 241
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 0,
+              "fn": 265,
+              "fp": 0,
+              "normal_hours": 0.10555555555555556,
+              "tn": 358,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 16.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 0,
+              "fn": 15,
+              "fp": 32,
+              "normal_hours": 0.08833333333333333,
+              "tn": 271,
+              "tp": 287
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 0,
+              "fn": 395,
+              "fp": 0,
+              "normal_hours": 0.145,
+              "tn": 496,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 66.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 0,
+              "fn": 63,
+              "fp": 2,
+              "normal_hours": 0.12833333333333333,
+              "tn": 438,
+              "tp": 336
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 2,
+              "fn": 0,
+              "fp": 204,
+              "normal_hours": 0.12916666666666668,
+              "tn": 242,
+              "tp": 404
+            },
+            {
+              "delay_seconds": 21.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 0,
+              "fn": 19,
+              "fp": 135,
+              "normal_hours": 0.1275,
+              "tn": 296,
+              "tp": 375
+            },
+            {
+              "delay_seconds": 52.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 0,
+              "fn": 48,
+              "fp": 12,
+              "normal_hours": 0.1275,
+              "tn": 418,
+              "tp": 285
+            },
+            {
+              "delay_seconds": 64.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 0,
+              "fn": 74,
+              "fp": 0,
+              "normal_hours": 0.12777777777777777,
+              "tn": 434,
+              "tp": 321
+            },
+            {
+              "delay_seconds": 58.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 0,
+              "fn": 54,
+              "fp": 5,
+              "normal_hours": 0.08833333333333333,
+              "tn": 295,
+              "tp": 341
+            }
+          ]
+        }
+      }
+    },
+    "p2_riwayat_normal": {
+      "ambang_statistik": {
+        "hemat_alarm": {
+          "ambang": 2.087,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.7092,
+            "10": 0.743,
+            "30": 0.7472
+          },
+          "jendela_fitur": 30,
+          "ketekunan_detik": 1,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 0.7705479452054795,
+            "eksperimen": [
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.7471629596005448,
+            "far_persen": 3.9541676027858905,
+            "jam_normal_teramati": 1.2977777777777777,
+            "mar_persen": 36.30030959752322,
+            "n_eksperimen": 6,
+            "pr_auc": 0.7997027795453375,
+            "precision": 0.9034028540065862,
+            "recall": 0.6369969040247678,
+            "recall_kejadian": 1.0,
+            "tunda_deteksi_median_detik": 30.5
+          },
+          "tahan_detik": 30,
+          "uji": {
+            "alarm_palsu_per_jam": 1.4295168762409,
+            "f1": 0.6854118425405226,
+            "far_persen": 5.411897696764165,
+            "jam_normal_teramati": 2.098611111111111,
+            "mar_persen": 42.30019493177387,
+            "n_eksperimen": 10,
+            "pr_auc": 0.7156721765293367,
+            "precision": 0.8439918533604888,
+            "prevalensi_anomali": 0.33661417322834647,
+            "recall": 0.5769980506822612,
+            "recall_kejadian": 0.8,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                0.0,
+                2.8421520390838846
+              ],
+              "f1": [
+                0.4758547258460011,
+                0.8391096650524615
+              ],
+              "recall_kejadian": [
+                0.5,
+                1.0
+              ]
+            },
+            "tunda_deteksi_median_detik": 61.0
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 75.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 0,
+              "fn": 71,
+              "fp": 49,
+              "normal_hours": 0.21638888888888888,
+              "tn": 690,
+              "tp": 238
+            },
+            {
+              "delay_seconds": 3.0,
+              "event_detected": true,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 1,
+              "fn": 174,
+              "fp": 289,
+              "normal_hours": 0.21416666666666667,
+              "tn": 369,
+              "tp": 91
+            },
+            {
+              "delay_seconds": 18.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 1,
+              "fn": 202,
+              "fp": 5,
+              "normal_hours": 0.17583333333333334,
+              "tn": 598,
+              "tp": 100
+            },
+            {
+              "delay_seconds": 40.0,
+              "event_detected": true,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 1,
+              "fn": 38,
+              "fp": 32,
+              "normal_hours": 0.23305555555555554,
+              "tn": 764,
+              "tp": 357
+            },
+            {
+              "delay_seconds": 63.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 0,
+              "fn": 60,
+              "fp": 1,
+              "normal_hours": 0.21638888888888888,
+              "tn": 739,
+              "tp": 339
+            },
+            {
+              "delay_seconds": 59.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 0,
+              "fn": 56,
+              "fp": 5,
+              "normal_hours": 0.21638888888888888,
+              "tn": 741,
+              "tp": 348
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 0,
+              "fn": 394,
+              "fp": 0,
+              "normal_hours": 0.21638888888888888,
+              "tn": 731,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 71.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 0,
+              "fn": 69,
+              "fp": 0,
+              "normal_hours": 0.21666666666666667,
+              "tn": 730,
+              "tp": 264
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 0,
+              "fn": 395,
+              "fp": 0,
+              "normal_hours": 0.21638888888888888,
+              "tn": 734,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 64.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 0,
+              "fn": 60,
+              "fp": 2,
+              "normal_hours": 0.17694444444444443,
+              "tn": 598,
+              "tp": 335
+            }
+          ]
+        },
+        "sensitif": {
+          "ambang": 0.301,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.7462,
+            "10": 0.743,
+            "30": 0.7518
+          },
+          "jendela_fitur": 30,
+          "ketekunan_detik": 15,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 13.86986301369863,
+            "eksperimen": [
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.7518328445747801,
+            "far_persen": 18.445293192541,
+            "jam_normal_teramati": 1.2977777777777777,
+            "mar_persen": 20.626934984520123,
+            "n_eksperimen": 6,
+            "pr_auc": 0.7997027795453375,
+            "precision": 0.7141364902506964,
+            "recall": 0.7937306501547987,
+            "recall_kejadian": 1.0,
+            "tunda_deteksi_median_detik": 15.0
+          },
+          "tahan_detik": 0,
+          "uji": {
+            "alarm_palsu_per_jam": 4.765056254136334,
+            "f1": 0.5741180461329715,
+            "far_persen": 68.05143422354105,
+            "jam_normal_teramati": 2.098611111111111,
+            "mar_persen": 5.7365636313004735,
+            "n_eksperimen": 10,
+            "pr_auc": 0.7156721765293367,
+            "precision": 0.41275454212900864,
+            "prevalensi_anomali": 0.33661417322834647,
+            "recall": 0.9426343636869953,
+            "recall_kejadian": 1.0,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                2.760700928866332,
+                7.281746909348254
+              ],
+              "f1": [
+                0.5068616690415135,
+                0.6745026187310543
+              ],
+              "recall_kejadian": [
+                1.0,
+                1.0
+              ]
+            },
+            "tunda_deteksi_median_detik": 0.0
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 725,
+              "normal_hours": 0.21638888888888888,
+              "tn": 14,
+              "tp": 309
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 644,
+              "normal_hours": 0.21416666666666667,
+              "tn": 14,
+              "tp": 265
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 589,
+              "normal_hours": 0.17583333333333334,
+              "tn": 14,
+              "tp": 302
+            },
+            {
+              "delay_seconds": 49.0,
+              "event_detected": true,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 0,
+              "fn": 46,
+              "fp": 0,
+              "normal_hours": 0.23305555555555554,
+              "tn": 796,
+              "tp": 349
+            },
+            {
+              "delay_seconds": 67.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 0,
+              "fn": 73,
+              "fp": 0,
+              "normal_hours": 0.21638888888888888,
+              "tn": 740,
+              "tp": 326
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 3,
+              "fn": 87,
+              "fp": 119,
+              "normal_hours": 0.21638888888888888,
+              "tn": 627,
+              "tp": 317
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 717,
+              "normal_hours": 0.21638888888888888,
+              "tn": 14,
+              "tp": 394
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 716,
+              "normal_hours": 0.21666666666666667,
+              "tn": 14,
+              "tp": 333
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 720,
+              "normal_hours": 0.21638888888888888,
+              "tn": 14,
+              "tp": 395
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 586,
+              "normal_hours": 0.17694444444444443,
+              "tn": 14,
+              "tp": 395
+            }
+          ]
+        }
+      },
+      "isolation_forest": {
+        "hemat_alarm": {
+          "ambang": 0.691,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.5026,
+            "10": 0.1364,
+            "30": 0.2301
+          },
+          "jendela_fitur": 1,
+          "ketekunan_detik": 15,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 1.541095890410959,
+            "eksperimen": [
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.5026260504201681,
+            "far_persen": 5.998651988317232,
+            "jam_normal_teramati": 1.2977777777777777,
+            "mar_persen": 62.964396284829725,
+            "n_eksperimen": 6,
+            "pr_auc": 0.5880276797960287,
+            "precision": 0.7818627450980392,
+            "recall": 0.3703560371517028,
+            "recall_kejadian": 0.6666666666666666,
+            "tunda_deteksi_median_detik": 56.5
+          },
+          "tahan_detik": 30,
+          "uji": {
+            "alarm_palsu_per_jam": 2.382528127068167,
+            "f1": 0.22807707432166735,
+            "far_persen": 12.929207291225095,
+            "jam_normal_teramati": 2.098611111111111,
+            "mar_persen": 83.84851016429964,
+            "n_eksperimen": 10,
+            "pr_auc": 0.44989130519556714,
+            "precision": 0.3879598662207358,
+            "prevalensi_anomali": 0.33661417322834647,
+            "recall": 0.1615148983570036,
+            "recall_kejadian": 0.3,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                0.0,
+                6.435085098049962
+              ],
+              "f1": [
+                0.0,
+                0.4049781069750694
+              ],
+              "recall_kejadian": [
+                0.0,
+                0.6
+              ]
+            },
+            "tunda_deteksi_median_detik": 28.0
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 83.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 4,
+              "fn": 78,
+              "fp": 543,
+              "normal_hours": 0.21638888888888888,
+              "tn": 196,
+              "tp": 231
+            },
+            {
+              "delay_seconds": 21.0,
+              "event_detected": true,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 1,
+              "fn": 191,
+              "fp": 340,
+              "normal_hours": 0.21416666666666667,
+              "tn": 318,
+              "tp": 74
+            },
+            {
+              "delay_seconds": 28.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 0,
+              "fn": 27,
+              "fp": 32,
+              "normal_hours": 0.17583333333333334,
+              "tn": 571,
+              "tp": 275
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 0,
+              "fn": 395,
+              "fp": 0,
+              "normal_hours": 0.23305555555555554,
+              "tn": 796,
+              "tp": 0
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 0,
+              "fn": 399,
+              "fp": 0,
+              "normal_hours": 0.21638888888888888,
+              "tn": 740,
+              "tp": 0
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 0,
+              "fn": 404,
+              "fp": 0,
+              "normal_hours": 0.21638888888888888,
+              "tn": 746,
+              "tp": 0
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 0,
+              "fn": 394,
+              "fp": 0,
+              "normal_hours": 0.21638888888888888,
+              "tn": 731,
+              "tp": 0
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 0,
+              "fn": 333,
+              "fp": 0,
+              "normal_hours": 0.21666666666666667,
+              "tn": 730,
+              "tp": 0
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 0,
+              "fn": 395,
+              "fp": 0,
+              "normal_hours": 0.21638888888888888,
+              "tn": 734,
+              "tp": 0
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 0,
+              "fn": 395,
+              "fp": 0,
+              "normal_hours": 0.17694444444444443,
+              "tn": 600,
+              "tp": 0
+            }
+          ]
+        },
+        "sensitif": {
+          "ambang": 0.199,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.677,
+            "10": 0.6245,
+            "30": 0.6013
+          },
+          "jendela_fitur": 1,
+          "ketekunan_detik": 15,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 14.640410958904111,
+            "eksperimen": [
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.6769880365939479,
+            "far_persen": 26.421028982251176,
+            "jam_normal_teramati": 1.2977777777777777,
+            "mar_persen": 25.541795665634677,
+            "n_eksperimen": 6,
+            "pr_auc": 0.5880276797960287,
+            "precision": 0.6206451612903225,
+            "recall": 0.7445820433436533,
+            "recall_kejadian": 0.8333333333333334,
+            "tunda_deteksi_median_detik": 0.0
+          },
+          "tahan_detik": 0,
+          "uji": {
+            "alarm_palsu_per_jam": 2.382528127068167,
+            "f1": 0.5347030159357302,
+            "far_persen": 27.864914511798784,
+            "jam_normal_teramati": 2.098611111111111,
+            "mar_persen": 43.46978557504873,
+            "n_eksperimen": 10,
+            "pr_auc": 0.44989130519556714,
+            "precision": 0.5072463768115942,
+            "prevalensi_anomali": 0.33661417322834647,
+            "recall": 0.5653021442495126,
+            "recall_kejadian": 0.8,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                0.9439498824096074,
+                3.8430744595676543
+              ],
+              "f1": [
+                0.4143718256278057,
+                0.6725473076815097
+              ],
+              "recall_kejadian": [
+                0.5,
+                1.0
+              ]
+            },
+            "tunda_deteksi_median_detik": 61.5
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 725,
+              "normal_hours": 0.21638888888888888,
+              "tn": 14,
+              "tp": 309
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 644,
+              "normal_hours": 0.21416666666666667,
+              "tn": 14,
+              "tp": 265
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 589,
+              "normal_hours": 0.17583333333333334,
+              "tn": 14,
+              "tp": 302
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 0,
+              "fn": 395,
+              "fp": 0,
+              "normal_hours": 0.23305555555555554,
+              "tn": 796,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 63.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 0,
+              "fn": 140,
+              "fp": 0,
+              "normal_hours": 0.21638888888888888,
+              "tn": 740,
+              "tp": 259
+            },
+            {
+              "delay_seconds": 68.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 1,
+              "fn": 114,
+              "fp": 11,
+              "normal_hours": 0.21638888888888888,
+              "tn": 735,
+              "tp": 290
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 1,
+              "fn": 394,
+              "fp": 3,
+              "normal_hours": 0.21638888888888888,
+              "tn": 728,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 60.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 0,
+              "fn": 113,
+              "fp": 0,
+              "normal_hours": 0.21666666666666667,
+              "tn": 730,
+              "tp": 220
+            },
+            {
+              "delay_seconds": 72.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 0,
+              "fn": 103,
+              "fp": 0,
+              "normal_hours": 0.21638888888888888,
+              "tn": 734,
+              "tp": 292
+            },
+            {
+              "delay_seconds": 69.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 0,
+              "fn": 302,
+              "fp": 0,
+              "normal_hours": 0.17694444444444443,
+              "tn": 600,
+              "tp": 93
+            }
+          ]
+        }
+      },
+      "pca": {
+        "hemat_alarm": {
+          "ambang": 2.396,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.6597,
+            "10": 0.8263,
+            "30": 0.7829
+          },
+          "jendela_fitur": 10,
+          "ketekunan_detik": 15,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 1.541095890410959,
+            "eksperimen": [
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.826311263972485,
+            "far_persen": 3.280161761401932,
+            "jam_normal_teramati": 1.2977777777777777,
+            "mar_persen": 25.61919504643963,
+            "n_eksperimen": 6,
+            "pr_auc": 0.871672393386322,
+            "precision": 0.9294003868471954,
+            "recall": 0.7438080495356038,
+            "recall_kejadian": 0.8333333333333334,
+            "tunda_deteksi_median_detik": 42.0
+          },
+          "tahan_detik": 30,
+          "uji": {
+            "alarm_palsu_per_jam": 7.624090006618134,
+            "f1": 0.6297477529718759,
+            "far_persen": 49.427723611699875,
+            "jam_normal_teramati": 2.098611111111111,
+            "mar_persen": 9.273182957393484,
+            "n_eksperimen": 10,
+            "pr_auc": 0.7252723488428713,
+            "precision": 0.4822380106571936,
+            "prevalensi_anomali": 0.33661417322834647,
+            "recall": 0.9072681704260651,
+            "recall_kejadian": 1.0,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                3.311388834524686,
+                12.001720293406606
+              ],
+              "f1": [
+                0.5431038659355227,
+                0.7418520462181653
+              ],
+              "recall_kejadian": [
+                1.0,
+                1.0
+              ]
+            },
+            "tunda_deteksi_median_detik": 0.0
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 725,
+              "normal_hours": 0.21638888888888888,
+              "tn": 14,
+              "tp": 309
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 644,
+              "normal_hours": 0.21416666666666667,
+              "tn": 14,
+              "tp": 265
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 2,
+              "fn": 0,
+              "fp": 582,
+              "normal_hours": 0.17583333333333334,
+              "tn": 21,
+              "tp": 302
+            },
+            {
+              "delay_seconds": 65.0,
+              "event_detected": true,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 0,
+              "fn": 61,
+              "fp": 0,
+              "normal_hours": 0.23305555555555554,
+              "tn": 796,
+              "tp": 334
+            },
+            {
+              "delay_seconds": 64.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 0,
+              "fn": 61,
+              "fp": 1,
+              "normal_hours": 0.21638888888888888,
+              "tn": 739,
+              "tp": 338
+            },
+            {
+              "delay_seconds": 72.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 0,
+              "fn": 83,
+              "fp": 0,
+              "normal_hours": 0.21638888888888888,
+              "tn": 746,
+              "tp": 321
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 5,
+              "fn": 80,
+              "fp": 227,
+              "normal_hours": 0.21638888888888888,
+              "tn": 504,
+              "tp": 314
+            },
+            {
+              "delay_seconds": 52.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 3,
+              "fn": 48,
+              "fp": 95,
+              "normal_hours": 0.21666666666666667,
+              "tn": 635,
+              "tp": 285
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 3,
+              "fn": 0,
+              "fp": 638,
+              "normal_hours": 0.21638888888888888,
+              "tn": 96,
+              "tp": 395
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 586,
+              "normal_hours": 0.17694444444444443,
+              "tn": 14,
+              "tp": 395
+            }
+          ]
+        },
+        "sensitif": {
+          "ambang": 2.087,
+          "ambang_di_tepi_grid": false,
+          "f1_penyetelan_per_jendela": {
+            "1": 0.697,
+            "10": 0.8263,
+            "30": 0.8351
+          },
+          "jendela_fitur": 30,
+          "ketekunan_detik": 1,
+          "penyetelan": {
+            "alarm_palsu_per_jam": 6.164383561643836,
+            "eksperimen": [
+              "other/9",
+              "other/10",
+              "other/3",
+              "valve1/10",
+              "valve1/11",
+              "valve1/12"
+            ],
+            "f1": 0.8350916157690172,
+            "far_persen": 12.648842956638958,
+            "jam_normal_teramati": 1.2977777777777777,
+            "mar_persen": 12.693498452012383,
+            "n_eksperimen": 6,
+            "pr_auc": 0.8830388143446924,
+            "precision": 0.8002837885775097,
+            "recall": 0.8730650154798761,
+            "recall_kejadian": 1.0,
+            "tunda_deteksi_median_detik": 15.5
+          },
+          "tahan_detik": 10,
+          "uji": {
+            "alarm_palsu_per_jam": 15.724685638649902,
+            "f1": 0.6119087837837838,
+            "far_persen": 42.150628797513065,
+            "jam_normal_teramati": 2.098611111111111,
+            "mar_persen": 19.298245614035086,
+            "n_eksperimen": 10,
+            "pr_auc": 0.6405212918287895,
+            "precision": 0.49277333786770955,
+            "prevalensi_anomali": 0.33661417322834647,
+            "recall": 0.8070175438596491,
+            "recall_kejadian": 0.9,
+            "selang_95": {
+              "alarm_palsu_per_jam": [
+                7.7023884898954105,
+                25.45104876427278
+              ],
+              "f1": [
+                0.49724329025510206,
+                0.733104766234191
+              ],
+              "recall_kejadian": [
+                0.7,
+                1.0
+              ]
+            },
+            "tunda_deteksi_median_detik": 0.0
+          },
+          "uji_per_eksperimen": [
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 423.0,
+              "exp": "other/12",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 739,
+              "normal_hours": 0.21638888888888888,
+              "tn": 0,
+              "tp": 309
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 351.0,
+              "exp": "other/13",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 658,
+              "normal_hours": 0.21416666666666667,
+              "tn": 0,
+              "tp": 265
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 317.0,
+              "exp": "other/14",
+              "false_episodes": 1,
+              "fn": 0,
+              "fp": 603,
+              "normal_hours": 0.17583333333333334,
+              "tn": 0,
+              "tp": 302
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 416.0,
+              "exp": "other/4",
+              "false_episodes": 4,
+              "fn": 0,
+              "fp": 149,
+              "normal_hours": 0.23305555555555554,
+              "tn": 647,
+              "tp": 395
+            },
+            {
+              "delay_seconds": 66.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve1/14",
+              "false_episodes": 1,
+              "fn": 83,
+              "fp": 11,
+              "normal_hours": 0.21638888888888888,
+              "tn": 729,
+              "tp": 316
+            },
+            {
+              "delay_seconds": 60.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve1/15",
+              "false_episodes": 1,
+              "fn": 73,
+              "fp": 12,
+              "normal_hours": 0.21638888888888888,
+              "tn": 734,
+              "tp": 331
+            },
+            {
+              "delay_seconds": null,
+              "event_detected": false,
+              "event_seconds": 419.0,
+              "exp": "valve2/0",
+              "false_episodes": 2,
+              "fn": 394,
+              "fp": 111,
+              "normal_hours": 0.21638888888888888,
+              "tn": 620,
+              "tp": 0
+            },
+            {
+              "delay_seconds": 0.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/1",
+              "false_episodes": 5,
+              "fn": 62,
+              "fp": 142,
+              "normal_hours": 0.21666666666666667,
+              "tn": 588,
+              "tp": 271
+            },
+            {
+              "delay_seconds": 51.0,
+              "event_detected": true,
+              "event_seconds": 419.0,
+              "exp": "valve2/2",
+              "false_episodes": 10,
+              "fn": 65,
+              "fp": 231,
+              "normal_hours": 0.21638888888888888,
+              "tn": 503,
+              "tp": 330
+            },
+            {
+              "delay_seconds": 1.0,
+              "event_detected": true,
+              "event_seconds": 420.0,
+              "exp": "valve2/3",
+              "false_episodes": 7,
+              "fn": 16,
+              "fp": 327,
+              "normal_hours": 0.17694444444444443,
+              "tn": 273,
+              "tp": 379
+            }
+          ]
+        }
+      }
+    }
+  },
+  "versi_kode": "0.1.0"
+}
