@@ -6,6 +6,8 @@ Mendeteksi kondisi abnormal pada pompa air dari 8 sensor dan memberi peringatan 
 
 **Bukan untuk** keputusan keselamatan atau produksi. Data hanya dari satu rig uji kecil, dengan satu jenis mesin.
 
+"Peringatan dini" di sini berarti alarm menyala segera setelah pola sensor mulai berbeda dari kondisi normal. Ini **bukan** ramalan kerusakan, bukan perkiraan sisa umur komponen, dan bukan pemeliharaan prediktif. Website demo (https://industrial-sensor-sentinel.pages.dev/) menampilkan skor yang sudah dihitung dari rekaman tersimpan, bukan pemantauan waktu nyata.
+
 ## Model
 
 Semua model tanpa label: hanya data normal yang dipakai untuk fit.
@@ -67,9 +69,15 @@ Hanya satu dari empat perbandingan yang selangnya di atas nol, dan selisihnya ke
 Rinciannya di `reports/error_analysis.json` dan halaman Kesalahan di website.
 
 - Kejadian terlewat: ambang statistik melewatkan `other/13` (aliran dua fase, pergeseran sensor hanya 1,5 simpangan baku). PCA melewatkan `other/13` dan `other/4` (simulasi kebocoran). Isolation Forest mendeteksi semua kejadian tetapi dengan alarm palsu terbanyak.
-- Proporsi titik anomali yang terlewat berkorelasi negatif dengan besar pergeseran sensor (Spearman sekitar minus 0,4 sampai minus 0,5 pada tiga model). Dengan 10 rekaman, ini petunjuk, bukan bukti.
+- Proporsi titik anomali yang terlewat berkorelasi negatif dengan besar pergeseran sensor (korelasi peringkat Spearman minus 0,41 sampai minus 0,53 pada tiga model, mode sensitif). Dengan 10 rekaman, ini petunjuk, bukan bukti.
 - Titik alarm palsu lebih banyak muncul sesudah kejadian daripada sebelum. Dugaan: sensor belum pulih padahal label sudah selesai. Sebagian alarm sebelum label bisa saja peringatan dini yang sah (sensor mulai bergeser sebelum label dimulai), tetapi label tidak memungkinkan hal itu dibuktikan, sehingga dihitung palsu.
 - Generalisasi: skor F1 penyetelan umumnya lebih tinggi daripada uji (terutama skema B, misalnya PCA 0,83 pada validasi menjadi 0,61 pada uji). Penyetelan di rekaman lama tidak sepenuhnya berlaku untuk rekaman yang lebih baru.
+
+## Transparansi proses pengembangan
+
+- Pembagian latih, validasi, uji ditetapkan dan diperiksa otomatis sebelum penyetelan. Ambang, ketekunan, penahanan, dan jendela fitur hanya dipilih dari rekaman latih dan validasi.
+- Hasil uji sempat dilihat selama pengembangan. Dua perubahan dibuat sesudahnya: (1) definisi alarm diperketat karena definisi lama bisa diakali alarm yang menyala terus (alarm yang sudah menyala sebelum kejadian kini dihitung palsu), dan (2) rentang ambang yang dicoba diperluas sampai 100 karena ambang terpilih sempat berada di tepi rentang pada data penyetelan. Keduanya berlaku sama untuk semua model, dan tidak ada ambang terpilih yang kini berada di tepi rentang.
+- `tools/verify_published.py` menghitung ulang angka website dari data mentah secara independen dan dijalankan di CI.
 
 ## Keterbatasan
 

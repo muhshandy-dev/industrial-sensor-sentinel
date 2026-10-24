@@ -1,6 +1,8 @@
 import { h, clear } from "./dom.js";
 import { num } from "./format.js";
 
+const P1 = "p1_kalibrasi_awal|";
+
 export function renderMethod(root, summary) {
   clear(root);
   const sp = summary.pembagian;
@@ -18,6 +20,8 @@ export function renderMethod(root, summary) {
   root.append(
     h("p", { class: "eyebrow" }, "Metodologi dan keterbatasan"),
     h("h1", null, "Bagaimana hasil ini dibuat"),
+    h("h2", null, "Apa yang dimaksud peringatan dini"),
+    h("p", null, "Peringatan dini di sini berarti alarm menyala ketika pola sensor mulai berbeda dari kondisi normal, idealnya dalam hitungan detik setelah gangguan dimulai. Ini bukan ramalan kapan mesin akan rusak, bukan perkiraan sisa umur komponen, dan bukan sistem pemeliharaan prediktif. Website ini juga tidak terhubung ke sensor mana pun: semua skor dihitung sebelumnya dari rekaman yang tersimpan, lalu ditampilkan ulang."),
     h("h2", null, "Data"),
     h("p", null, `Skoltech Anomaly Benchmark (SKAB), versi pada commit ${summary.sumber_data.commit.slice(0, 7)}, lisensi GPL-3.0. Ada ${p.jumlah_berkas} berkas: ${p.eksperimen_berlabel} rekaman berlabel dan satu rekaman normal tanpa label. Tiap rekaman berisi delapan sensor yang dicatat sekitar tiap detik, dan tepat satu kejadian anomali yang berurutan.`),
     h("h2", null, "Pembagian data tanpa kebocoran"),
@@ -40,10 +44,25 @@ export function renderMethod(root, summary) {
     ),
     h("h2", null, "Metrik"),
     h("ul", { class: "clean" },
-      h("li", null, "Skor F1, presisi, dan recall dihitung per titik waktu, digabung dari semua rekaman uji. PR-AUC menilai urutan skor tanpa ambang."),
-      h("li", null, "Kejadian terdeteksi: ada alarm yang menyala saat kejadian berlangsung. Tunda deteksi: detik dari awal kejadian sampai alarm pertama."),
+      h("li", null, "Ketepatan alarm (presisi): dari seluruh waktu alarm menyala, berapa bagian yang memang anomali. Cakupan anomali (recall): dari seluruh waktu anomali, berapa bagian yang memicu alarm. Skor F1: rata-rata harmonik keduanya, 0 sampai 1. Ketiganya dihitung per pengukuran (sekitar satu per detik), digabung dari semua rekaman uji."),
+      h("li", null, "PR-AUC: kualitas skor sebelum diberi batas alarm, dirangkum dari semua kemungkinan batas. Nilai tebakan acak sama dengan porsi waktu yang anomali."),
+      h("li", null, "Kejadian tertangkap (recall kejadian): ada alarm yang mulai menyala saat kejadian berlangsung. Alarm yang sudah menyala sebelum kejadian tidak dihitung benar. Waktu sampai alarm (tunda deteksi): detik dari awal kejadian sampai alarm pertama, diringkas dengan nilai tengah (median)."),
       h("li", null, "Alarm palsu: alarm yang mulai menyala di luar kejadian, dihitung per jam waktu normal teramati. Selisih waktu lebih dari 5 detik antar pengukuran tidak dihitung sebagai waktu teramati."),
-      h("li", null, "Selang 95 persen dihitung dengan sampel ulang rekaman (bukan baris), 1000 kali."),
+      h("li", null, "Rentang 95 persen dihitung dengan sampel ulang rekaman (bootstrap per rekaman, bukan per baris), 1000 kali. Perbandingan dengan ambang statistik memakai sampel ulang berpasangan pada rekaman yang sama."),
+    ),
+    h("h2", null, "Detail analisis kesalahan"),
+    h("ul", { class: "clean" },
+      h("li", null, "Besar perubahan sensor: selisih rata-rata sensor selama kejadian dibanding sebelum kejadian, dibagi simpangan baku sensor itu saat normal. Yang dipakai adalah sensor dengan perubahan terbesar."),
+      h("li", null, `Hubungan antara besar perubahan dan bagian anomali tanpa alarm diukur dengan korelasi peringkat Spearman pada ${sp.test.length} rekaman uji, Skema A: ${rhoRange(summary)}. Nilai negatif berarti perubahan kecil lebih sering terlewat. Dengan ${sp.test.length} titik data, ini hanya indikasi.`),
+      h("li", null, "Alarm palsu sesudah kejadian dihitung terpisah karena label SKAB berakhir saat gangguan dihentikan, padahal sensor masih butuh waktu untuk kembali normal."),
+    ),
+    h("h2", null, "Transparansi proses pengembangan"),
+    h("ul", { class: "clean" },
+      h("li", null, "Pembagian latih, validasi, dan uji ditetapkan sebelum model dilatih, dan diperiksa otomatis agar tidak ada rekaman uji yang lebih lama dari rekaman latih dalam sesi yang sama."),
+      h("li", null, "Ambang, ketekunan, tahan alarm, dan jendela fitur dipilih hanya dari rekaman latih dan validasi. Tidak ada parameter yang dipilih memakai rekaman uji."),
+      h("li", null, "Hasil uji sempat dilihat selama pengembangan. Setelah itu definisi alarm diperketat, karena definisi lama bisa diakali oleh alarm yang menyala terus. Perubahan ini membuat penilaian lebih ketat untuk semua model dan tidak memilih model tertentu."),
+      h("li", null, "Rentang ambang yang dicoba diperluas setelah ambang terpilih sempat berada di tepi rentang pada data penyetelan. Kini tidak ada ambang terpilih yang berada di tepi rentang."),
+      h("li", null, "Sebuah skrip pemeriksa independen di repositori menghitung ulang semua angka website dari data mentah dan hasil evaluasi."),
     ),
     h("h2", null, "Keterbatasan"),
     h("ul", { class: "clean" },
@@ -53,9 +72,19 @@ export function renderMethod(root, summary) {
       h("li", null, "Cap waktu beberapa rekaman bertetangga saling tumpang tindih, sehingga urutan antar rekaman hanya memakai waktu mulai. Rekaman pemisah dipakai untuk mengurangi pengaruhnya."),
       h("li", null, "Skema A memerlukan awal rekaman yang normal. Bila mesin sudah bermasalah saat pemantauan dimulai, kalibrasi menjadi salah."),
       h("li", null, "Angka di sini tidak dapat dibandingkan langsung dengan papan peringkat SKAB, karena protokol pembagian dan definisi alarm berbeda."),
-      h("li", null, "Pelatihan dijalankan di sesi pengembangan. Notebook Kaggle disediakan di repo untuk mereproduksi hasil yang sama."),
+      h("li", null, "Website ini menampilkan hasil batch, bukan pemantauan waktu nyata, dan bukan pemeliharaan prediktif."),
+      h("li", null, "Notebook Kaggle disediakan di repositori untuk mereproduksi hasil, tetapi belum dijalankan di Kaggle. Hasil di sini dibuat dengan pipeline yang sama dan diperiksa ulang otomatis di GitHub Actions."),
     ),
     h("h2", null, "Reproduksi"),
     h("p", null, h("a", { href: "https://github.com/muhshandy-dev/industrial-sensor-sentinel", rel: "noopener" }, "Repositori GitHub"), " memuat kode, Data Card, Model Card, dan langkah reproduksi."),
   );
+}
+
+function rhoRange(summary) {
+  const vals = Object.entries(summary.analisis_kesalahan)
+    .filter(([k]) => k.startsWith(P1))
+    .map(([, a]) => a.korelasi_pergeseran_dan_proporsi_terlewat_spearman)
+    .filter((v) => v != null);
+  if (!vals.length) return "tidak tersedia";
+  return `antara ${num(Math.min(...vals), 2)} dan ${num(Math.max(...vals), 2)}, tergantung model dan mode`;
 }
