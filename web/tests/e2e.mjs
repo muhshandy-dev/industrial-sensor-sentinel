@@ -60,13 +60,18 @@ for (const width of WIDTHS) {
   await page.waitForSelector("#verdict .stat");
   // Geser ambang ke maksimum: tidak boleh ada alarm sama sekali
   await page.locator("#sl-ambang").fill("1000");
-  await page.waitForTimeout(120);
+  const manual = await page
+    .waitForFunction(
+      () => /Diubah manual/.test(document.querySelector("main").innerText) && /Terlewat/.test(document.querySelector("#verdict").innerText),
+      null,
+      { timeout: 5000 },
+    )
+    .then(() => true, () => false);
   const v = await verdict();
-  ok(/Terlewat/.test(v) && /0 kali/.test(v), `konsol @${width}: ambang maksimum seharusnya tanpa alarm. Isi: ${v.replace(/\n/g, " | ")}`);
-  ok(/Diubah manual/.test(await page.locator("main").innerText()), `konsol @${width}: status manual tidak muncul`);
+  ok(manual && /0 kali/.test(v), `konsol @${width}: ambang maksimum seharusnya tanpa alarm dan berstatus manual. Isi: ${v.replace(/\n/g, " | ")}`);
   await page.getByRole("button", { name: "Kembalikan ke nilai hasil penyetelan" }).click();
   const reset = await page
-    .waitForFunction(() => /Sesuai hasil penyetelan/.test(document.querySelector("main").innerText), null, { timeout: 3000 })
+    .waitForFunction(() => /Sesuai hasil penyetelan/.test(document.querySelector("main").innerText), null, { timeout: 5000 })
     .then(() => true, () => false);
   ok(reset, `konsol @${width}: reset gagal`);
   // Papan ketik pada grafik
