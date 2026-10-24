@@ -123,7 +123,7 @@ a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness:
 .rail-foot { margin: 20px 10px 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); line-height: 1.5; }
 .rail-foot strong { color: var(--text); font-weight: 600; }
 
-main { padding: 28px clamp(16px, 3vw, 36px) 56px; min-width: 0; max-width: 1240px; width: 100%; }
+main { padding: 28px clamp(16px, 3vw, 36px) 56px; min-width: 0; max-width: 1680px; width: 100%; }
 main:focus { outline: none; }
 .foot { grid-column: 1 / -1; padding: 14px 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12.5px; }
 .foot p { margin: 0; max-width: none; }
@@ -132,14 +132,14 @@ main:focus { outline: none; }
 h1 { font-size: 24px; line-height: 1.25; margin: 0 0 6px; letter-spacing: -0.015em; font-weight: 650; }
 h2 { font-size: 15px; line-height: 1.35; margin: 32px 0 10px; letter-spacing: -0.005em; font-weight: 620; }
 h3 { font-size: 14px; margin: 0 0 6px; font-weight: 600; }
-p { margin: 0 0 12px; max-width: 72ch; }
-.lead { color: var(--muted); max-width: 68ch; margin: 0; font-size: 14.5px; }
+p { margin: 0 0 12px; }
+.lead { color: var(--muted); margin: 0; font-size: 14.5px; }
 .page-head { padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
 .page-head.split { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px 32px; flex-wrap: wrap; }
 .page-head.split > div:first-child { flex: 1 1 420px; min-width: 0; }
 .actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.section-lead { color: var(--muted); margin: -2px 0 12px; max-width: 72ch; }
-.note { font-size: 13px; color: var(--muted); margin: 0 0 16px; padding-left: 12px; border-left: 2px solid var(--truth); max-width: 90ch; }
+.section-lead { color: var(--muted); margin: -2px 0 12px; }
+.note { font-size: 13px; color: var(--muted); margin: 0 0 16px; padding-left: 12px; border-left: 2px solid var(--truth); }
 
 /* Panel */
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
@@ -178,13 +178,13 @@ a.panel .s { color: var(--muted); margin: 0; }
 .card-foot .chart-note { margin: 0; }
 .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--muted); }
 .badge .dot { width: 6px; height: 6px; border-radius: 1px; background: var(--accent); }
-.notice { display: flex; gap: 10px; align-items: flex-start; border-left: 2px solid var(--truth); padding: 2px 0 2px 12px; margin: 0 0 16px; max-width: 90ch; color: var(--muted); font-size: 13px; }
+.notice { display: flex; gap: 10px; align-items: flex-start; border-left: 2px solid var(--truth); padding: 2px 0 2px 12px; margin: 0 0 16px; color: var(--muted); font-size: 13px; }
 .notice p { margin: 0; }
 .notice svg { flex: none; color: var(--truth); margin-top: 1px; }
 
 /* Temuan */
 ol.findings { list-style: none; margin: 0; padding: 0; counter-reset: f; }
-ol.findings li { counter-increment: f; position: relative; padding: 12px 0 12px 36px; border-top: 1px solid var(--line); max-width: 70ch; }
+ol.findings li { counter-increment: f; position: relative; padding: 12px 0 12px 36px; border-top: 1px solid var(--line); }
 ol.findings li:last-child { border-bottom: 1px solid var(--line); }
 ol.findings li::before { content: counter(f, decimal-leading-zero); position: absolute; left: 0; top: 13px; font: 600 12px/1.4 "JetBrains Mono Var", ui-monospace, monospace; color: var(--muted); }
 .finding { padding: 14px 16px; }
@@ -394,10 +394,10 @@ thead th, thead th.n { white-space: normal; min-width: 5.5em; }
 td .s { color: var(--muted); font-size: 12px; margin-top: 2px; }
 .grid + .table-wrap { margin-top: 12px; }
 
-.callout { border-left: 2px solid var(--truth); padding: 2px 0 2px 12px; margin: 0 0 14px; max-width: 80ch; }
+.callout { border-left: 2px solid var(--truth); padding: 2px 0 2px 12px; margin: 0 0 14px; }
 .callout.info { border-color: var(--accent); }
 .callout p:last-child { margin-bottom: 0; }
-ul.clean { margin: 0 0 14px; padding-left: 18px; max-width: 72ch; }
+ul.clean { margin: 0 0 14px; padding-left: 18px; }
 ul.clean li { margin-bottom: 6px; }
 ul.clean li::marker { color: var(--muted); }
 .noscript { padding: 16px; }
