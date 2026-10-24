@@ -37,6 +37,8 @@ jobs:
         run: sentinel data fetch
       - name: Tes (termasuk tes data asli dan reproduksi hasil)
         run: pytest --cov=sentinel --cov-report=term-missing
+      - name: Pemeriksaan independen angka website
+        run: python tools/verify_published.py
 
   web:
     runs-on: ubuntu-latest

@@ -139,6 +139,7 @@ input[type="range"] { width: 100%; min-width: 140px; accent-color: var(--signal)
 /* Grafik */
 .chart-wrap { padding: 10px 12px 14px; overflow: hidden; }
 .chart-wrap svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
+.chart-wrap.narrow { max-width: 760px; }
 .chart-note { color: var(--muted); font-size: 12.5px; margin: 6px 4px 0; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--muted); padding: 4px 4px 8px; }
 .legend i { display: inline-block; width: 14px; height: 10px; margin-right: 6px; vertical-align: -1px; border-radius: 2px; }
@@ -169,6 +170,8 @@ tbody tr:last-child td { border-bottom: 0; }
 th { color: var(--muted); font-weight: 600; font-size: 12.5px; background: var(--panel-2); white-space: nowrap; }
 td.n, th.n { text-align: right; white-space: nowrap; }
 caption { text-align: left; padding: 10px 12px; color: var(--muted); font-size: 13px; caption-side: top; }
+thead th, thead th.n { white-space: normal; min-width: 5.5em; }
+td .s { color: var(--muted); font-size: 12px; margin-top: 2px; }
 .chip { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid var(--line); white-space: nowrap; }
 .chip.ok { color: var(--ok); border-color: var(--ok); }
 .chip.bad { color: var(--alarm); border-color: var(--alarm); }
@@ -210,3 +213,4 @@ ul.clean li { margin-bottom: 6px; }
 @media (prefers-reduced-motion: no-preference) {
   .rail a, .btn, .seg button { transition: background-color 0.15s, border-color 0.15s, color 0.15s; }
 }
+.grid + .table-wrap { margin-top: 14px; }

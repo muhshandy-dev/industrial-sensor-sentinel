@@ -14,7 +14,7 @@ export async function renderConsole(root, summary, state, setState) {
   root.append(
     h("p", { class: "eyebrow" }, "Konsol pemantauan"),
     h("h1", null, "Lihat kapan model memberi peringatan"),
-    h("p", { class: "lead" }, "Pilih satu rekaman uji, lalu bandingkan peringatan model dengan kejadian sebenarnya. Skor dihitung satu kali di Python (hasil batch). Ambang dan aturan alarm dihitung ulang di browser Anda saat Anda menggesernya."),
+    h("p", { class: "lead" }, "Pilih satu rekaman uji, lalu bandingkan peringatan model dengan kejadian sebenarnya. Ini bukan pemantauan langsung: skor sudah dihitung sebelumnya dari rekaman yang tersimpan. Batas alarm dan aturan alarm dihitung ulang di browser Anda saat Anda menggesernya."),
   );
 
   const entries = summary.eksperimen;
@@ -65,8 +65,8 @@ export async function renderConsole(root, summary, state, setState) {
     h("div", { class: "field" }, h("span", { class: "lab" }, "Mode"), seg("Mode", Object.keys(MODE_LABEL), MODE_LABEL, state.mode, "mode")),
   );
   const tune = h("div", { class: "panel controls" },
-    h("div", { class: "field" }, h("label", { for: "sl-ambang" }, "Ambang skor"), h("div", { class: "slider-row" }, slThr, thrOut)),
-    h("div", { class: "field" }, h("label", { for: "sl-ketekunan" }, "Harus melewati ambang berturut-turut (detik)"), h("div", { class: "slider-row" }, slPer, perOut)),
+    h("div", { class: "field" }, h("label", { for: "sl-ambang" }, "Batas alarm (skor)"), h("div", { class: "slider-row" }, slThr, thrOut)),
+    h("div", { class: "field" }, h("label", { for: "sl-ketekunan" }, "Skor harus di atas batas selama (detik)"), h("div", { class: "slider-row" }, slPer, perOut)),
     h("div", { class: "field" }, h("label", { for: "sl-tahan" }, "Alarm bertahan setelah skor turun (detik)"), h("div", { class: "slider-row" }, slHold, holdOut)),
     h("div", { class: "field" }, h("span", { class: "lab" }, "Status pengaturan"), tunedChip),
     resetBtn,
@@ -92,7 +92,7 @@ export async function renderConsole(root, summary, state, setState) {
       thrOut.textContent = num(cfg.ambang, cfg.ambang < 1 ? 2 : 1);
       perOut.textContent = `${cfg.ketekunan_detik} dtk`;
       holdOut.textContent = `${cfg.tahan_detik} dtk`;
-      slThr.setAttribute("aria-valuetext", `ambang ${thrOut.textContent}`);
+      slThr.setAttribute("aria-valuetext", `batas alarm ${thrOut.textContent}`);
       drawVerdict(verdict, res);
       drawChart(chartHost, readout, exp, scores, cfg, res, summary);
       drawTimeline(timelineHost, exp, res);
@@ -124,10 +124,10 @@ function drawVerdict(host, r) {
   const rec = r.tp + r.fn ? r.tp / (r.tp + r.fn) : 0;
   const perHour = r.normalHours ? r.falseEpisodes / r.normalHours : 0;
   host.append(
-    stat("Kejadian sebenarnya", r.detected ? "Terdeteksi" : "Terlewat", r.detected ? "Ada alarm yang menyala saat kejadian" : "Tidak ada alarm saat kejadian", r.detected ? "good" : "bad"),
-    stat("Tunda deteksi", r.delay == null ? "tidak ada" : seconds(r.delay), "Sejak kejadian dimulai sampai alarm pertama"),
+    stat("Kejadian sebenarnya", r.detected ? "Tertangkap" : "Terlewat", r.detected ? "Ada alarm yang menyala saat kejadian" : "Tidak ada alarm saat kejadian", r.detected ? "good" : "bad"),
+    stat("Waktu sampai alarm", r.delay == null ? "tidak ada" : seconds(r.delay), "Sejak kejadian dimulai sampai alarm pertama"),
     stat("Alarm palsu", `${r.falseEpisodes} kali`, `${num(perHour, 1)} per jam waktu normal`, r.falseEpisodes ? "bad" : "good"),
-    stat("Skor F1 rekaman ini", num(f1(r), 2), `Presisi ${pct(prec * 100, 0)}, recall ${pct(rec * 100, 0)}`),
+    stat("Skor F1 rekaman ini", num(f1(r), 2), `Ketepatan alarm ${pct(prec * 100, 0)}, cakupan anomali ${pct(rec * 100, 0)}`),
   );
 }
 
@@ -139,7 +139,7 @@ function drawTimeline(host, exp, r) {
     return h("tr", null,
       h("td", { class: "n" }, `${exp.detik[a]} detik`),
       h("td", { class: "n" }, `${exp.detik[b] - exp.detik[a] + 1} detik`),
-      h("td", null, h("span", { class: `chip ${ok ? "ok" : "bad"}` }, ok ? "Alarm sah" : "Alarm palsu")),
+      h("td", null, h("span", { class: `chip ${ok ? "ok" : "bad"}` }, ok ? "Alarm benar" : "Alarm palsu")),
       h("td", null, a < s0 ? "Sebelum kejadian" : a > e0 ? "Setelah kejadian" : "Saat kejadian"),
     );
   });
@@ -205,10 +205,10 @@ function drawChart(host, readout, exp, scores, cfg, res, summary) {
     svg.append(s("line", { class: "grid-line", x1: padL, x2: padL + pw, y1: ys(tick), y2: ys(tick) }));
     svg.append(s("text", { class: "t-label", x: padL + 2, y: ys(tick) - 3 }, String(tick)));
   }
-  svg.append(s("text", { class: "t-title", x: padL + pw - 4, y: sy0 + 12, "text-anchor": "end" }, narrow ? "Skor (log)" : "Skor anomali (skala log)"));
+  svg.append(s("text", { class: "t-title", x: padL + pw - 4, y: sy0 + 12, "text-anchor": "end" }, narrow ? "Skor anomali" : "Skor anomali (makin tinggi makin tidak normal)"));
   svg.append(s("polyline", { class: "trace score", points: exp.detik.map((t, i) => `${x(t).toFixed(1)},${ys(scores[i]).toFixed(1)}`).join(" ") }));
   svg.append(s("line", { class: "thr-line", x1: padL, x2: padL + pw, y1: ys(cfg.ambang), y2: ys(cfg.ambang) }));
-  svg.append(s("text", { class: "t-label", x: padL + pw - 4, y: ys(cfg.ambang) - 4, "text-anchor": "end" }, "ambang"));
+  svg.append(s("text", { class: "t-label", x: padL + pw - 4, y: ys(cfg.ambang) - 4, "text-anchor": "end" }, "batas alarm"));
 
   // Sensor
   sensors.forEach((sen, i) => {
@@ -273,7 +273,7 @@ function drawChart(host, readout, exp, scores, cfg, res, summary) {
   host.append(
     h("div", { class: "legend" },
       h("span", null, h("i", { class: "sw-truth" }), "Kejadian sebenarnya (label SKAB)"),
-      h("span", null, h("i", { class: "sw-alarm" }), "Alarm sah"),
+      h("span", null, h("i", { class: "sw-alarm" }), "Alarm benar"),
       h("span", null, h("i", { class: "sw-false" }), "Garis putus-putus: alarm palsu"),
       h("span", null, h("i", { class: "sw-calib" }), "Kalibrasi awal, tidak dinilai"),
     ),

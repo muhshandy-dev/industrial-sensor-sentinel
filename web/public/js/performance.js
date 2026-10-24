@@ -11,7 +11,7 @@ export function renderPerformance(root, summary, state, setState) {
   root.append(
     h("p", { class: "eyebrow" }, "Kinerja model"),
     h("h1", null, "Seberapa baik tiap model mendeteksi anomali"),
-    h("p", { class: "lead" }, "Semua angka dihitung pada rekaman uji yang tidak dipakai untuk melatih atau menyetel apa pun. Karena jumlah rekaman uji kecil, tiap angka disertai selang 95 persen. Selang yang lebar berarti hasilnya belum pasti."),
+    h("p", { class: "lead" }, "Semua angka dihitung pada rekaman uji yang tidak dipakai untuk melatih atau menyetel apa pun. Karena jumlah rekaman uji kecil, angka utama disertai rentang ketidakpastian 95 persen. Rentang yang lebar berarti hasilnya belum pasti."),
   );
 
   const controls = h("div", { class: "panel controls" },
@@ -29,15 +29,15 @@ export function renderPerformance(root, summary, state, setState) {
       ? `${SCHEME_SHORT[scheme]}: setiap rekaman dikalibrasi dari ${summary.kalibrasi_awal_detik} detik pertamanya yang normal, lalu dipantau. Ini skema utama di website ini.`
       : `${SCHEME_SHORT[scheme]}: satu model per sesi dilatih dari riwayat normal rekaman yang lebih lama, lalu dipakai pada rekaman yang lebih baru. Skema ini menguji ketahanan terhadap pergeseran kondisi mesin.`),
     h("p", null, mode === "sensitif"
-      ? "Mode sensitif: ambang dipilih agar skor F1 tertinggi pada data penyetelan."
-      : `Mode hemat alarm: skor F1 tertinggi dengan syarat alarm palsu paling banyak ${summary.grid.batas_alarm_palsu_per_jam_mode_hemat} kali per jam pada data penyetelan.`),
+      ? "Mode sensitif: batas alarm dipilih agar skor F1 (keseimbangan antara alarm yang tepat dan anomali yang tertangkap) paling tinggi pada data penyetelan."
+      : `Mode hemat alarm: skor F1 setinggi mungkin, dengan syarat alarm palsu paling banyak ${summary.grid.batas_alarm_palsu_per_jam_mode_hemat} kali per jam pada data penyetelan.`),
   ));
 
   // Batang F1 dan PR-AUC
   root.append(h("h2", null, "Perbandingan utama"));
   const bars = h("div", { class: "grid k2" },
-    barPanel("Skor F1 (makin tinggi makin baik)", rows, (r) => r.uji.f1, (r) => r.uji.selang_95.f1),
-    barPanel("PR-AUC (kualitas urutan skor, tanpa ambang)", rows, (r) => r.uji.pr_auc, null, rows[0].r.uji.prevalensi_anomali),
+    barPanel("Skor F1, makin tinggi makin baik", rows, (r) => r.uji.f1, (r) => r.uji.selang_95.f1),
+    barPanel("Kualitas skor sebelum diberi batas alarm (PR-AUC)", rows, (r) => r.uji.pr_auc, null, rows[0].r.uji.prevalensi_anomali),
   );
   root.append(bars);
 
@@ -47,18 +47,18 @@ export function renderPerformance(root, summary, state, setState) {
     const t = r.uji;
     return h("tr", null,
       h("th", { scope: "row" }, MODEL_LABEL[id]),
-      h("td", { class: "n" }, `${num(t.f1, 2)} (${ci(t.selang_95.f1)})`),
+      h("td", { class: "n" }, num(t.f1, 2), h("div", { class: "s" }, ci(t.selang_95.f1))),
       h("td", { class: "n" }, num(t.precision, 2)),
       h("td", { class: "n" }, num(t.recall, 2)),
       h("td", { class: "n" }, num(t.pr_auc, 2)),
-      h("td", { class: "n" }, `${pct(t.recall_kejadian * 100, 0)} (${ci(t.selang_95.recall_kejadian.map((v) => v * 100), 0)})`),
+      h("td", { class: "n" }, pct(t.recall_kejadian * 100, 0), h("div", { class: "s" }, `${ci(t.selang_95.recall_kejadian.map((v) => v * 100), 0)}%`)),
       h("td", { class: "n" }, seconds(t.tunda_deteksi_median_detik)),
-      h("td", { class: "n" }, `${num(t.alarm_palsu_per_jam, 1)} (${ci(t.selang_95.alarm_palsu_per_jam, 1)})`),
+      h("td", { class: "n" }, num(t.alarm_palsu_per_jam, 1), h("div", { class: "s" }, ci(t.selang_95.alarm_palsu_per_jam, 1))),
     );
   });
   root.append(h("div", { class: "table-wrap", tabindex: 0, role: "region", "aria-label": "Tabel. Geser ke samping untuk melihat kolom lain." }, h("table", null,
-    h("caption", null, `${SCHEME_LABEL[scheme]}, mode ${MODE_LABEL[mode].toLowerCase()}. ${rows[0].r.uji.n_eksperimen} rekaman uji, ${num(rows[0].r.uji.jam_normal_teramati, 1)} jam waktu normal teramati.`),
-    h("thead", null, h("tr", null, h("th", { scope: "col" }, "Model"), th("Skor F1 (selang 95%)", 1), th("Presisi", 1), th("Recall titik", 1), th("PR-AUC", 1), th("Kejadian terdeteksi", 1), th("Tunda (median)", 1), th("Alarm palsu per jam", 1))),
+    h("caption", null, `${SCHEME_LABEL[scheme]}, mode ${MODE_LABEL[mode].toLowerCase()}. ${rows[0].r.uji.n_eksperimen} rekaman uji, ${num(rows[0].r.uji.jam_normal_teramati, 1)} jam waktu normal teramati. Ketepatan: bagian waktu alarm yang memang anomali. Cakupan: bagian waktu anomali yang memicu alarm. Waktu sampai alarm: nilai tengah dari semua kejadian yang tertangkap. Angka kecil di bawah nilai adalah rentang 95 persen.`),
+    h("thead", null, h("tr", null, h("th", { scope: "col" }, "Model"), th("Skor F1", 1), th("Ketepatan alarm (presisi)", 1), th("Cakupan anomali (recall)", 1), th("PR-AUC", 1), th("Kejadian tertangkap", 1), th("Waktu sampai alarm", 1), th("Alarm palsu per jam", 1))),
     h("tbody", null, body),
   )));
 
@@ -68,7 +68,7 @@ export function renderPerformance(root, summary, state, setState) {
     if (!p) return null;
     const lo = p.selang_95[0], hi = p.selang_95[1];
     const verdict = lo > 0 ? (p.selisih_f1 < 0.05 ? "sedikit lebih baik, selisihnya kecil" : "lebih baik") : hi < 0 ? "lebih buruk" : "belum terbukti berbeda";
-    return h("li", null, `${label} dibanding ambang statistik: selisih F1 ${num(p.selisih_f1, 2)} (selang 95% ${num(lo, 2)} sampai ${num(hi, 2)}). Hasil: ${verdict}.`);
+    return h("li", null, `${label} dibanding ambang statistik: selisih skor F1 ${num(p.selisih_f1, 2)} (rentang 95% ${num(lo, 2)} sampai ${num(hi, 2)}). Kesimpulan: ${verdict}.`);
   }).filter(Boolean);
   root.append(h("h2", null, "Apakah model yang lebih rumit benar-benar lebih baik?"),
     h("p", null, "Kami membandingkan tiap model dengan baseline paling sederhana, ambang statistik, pada rekaman uji yang sama. Model lain hanya layak ditambah bila selisihnya terbukti positif."),
@@ -83,13 +83,13 @@ export function renderPerformance(root, summary, state, setState) {
       const r = c.per[e.id];
       if (!r) return h("td", null, h("span", { class: "chip mute" }, "tidak dinilai"));
       return h("td", null,
-        h("span", { class: `chip ${r.event_detected ? "ok" : "bad"}` }, r.event_detected ? `Terdeteksi, tunda ${num(r.delay_seconds, 0)} dtk` : "Terlewat"),
+        h("span", { class: `chip ${r.event_detected ? "ok" : "bad"}` }, r.event_detected ? `Tertangkap, alarm setelah ${num(r.delay_seconds, 0)} detik` : "Terlewat"),
         h("div", { class: "s num" }, `${r.false_episodes} alarm palsu`));
     }),
   ));
   root.append(h("h2", null, "Hasil per rekaman uji"),
     h("div", { class: "table-wrap", tabindex: 0, role: "region", "aria-label": "Tabel. Geser ke samping untuk melihat kolom lain." }, h("table", null,
-      h("caption", null, "Satu kejadian anomali per rekaman. Alarm hanya sah bila mulai menyala pada saat kejadian."),
+      h("caption", null, "Satu kejadian anomali per rekaman. Alarm hanya dihitung benar bila mulai menyala saat kejadian berlangsung."),
       h("thead", null, h("tr", null, h("th", { scope: "col" }, "Rekaman"), models.map((m) => h("th", { scope: "col" }, MODEL_LABEL[m])))),
       h("tbody", null, matrix))));
 }
@@ -113,6 +113,6 @@ function barPanel(title, rows, val, ciOf, baseline) {
     list.append(h("div", { class: "bar-row" }, h("span", { class: "name" }, MODEL_LABEL[id]), svg, h("span", { class: "val num" }, num(v, 2))));
   }
   panel.append(list);
-  panel.append(h("p", { class: "chart-note" }, ciOf ? "Garis hitam menunjukkan selang 95 persen." : `Garis putus-putus kuning: tingkat tebakan acak (${num(baseline, 2)}), yaitu porsi titik anomali.`));
+  panel.append(h("p", { class: "chart-note" }, ciOf ? "Garis tegak di sekitar ujung batang menunjukkan rentang ketidakpastian 95 persen." : `Garis putus-putus kuning: nilai tebakan acak (${num(baseline, 2)}), yaitu porsi waktu yang anomali. Makin jauh di atas garis ini, makin baik.`));
   return panel;
 }

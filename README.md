@@ -2,9 +2,15 @@
 
 Deteksi anomali dan peringatan dini sensor industri. Proyek ini melatih dan menilai tiga detektor tanpa label pada data **Skoltech Anomaly Benchmark (SKAB)**: 8 sensor pada rig pompa air, tercatat tiap detik. Hasilnya ditampilkan di website statis berbentuk konsol pemantauan.
 
-> Status: kode, evaluasi, dan website selesai dan diuji secara lokal. Deploy Cloudflare Pages dan reproduksi di Kaggle belum dijalankan (lihat bagian Status).
+**Demo:** https://industrial-sensor-sentinel.pages.dev/ (Cloudflare Pages, situs statis)
+
+> Status: kode, evaluasi, website, dan CI selesai. Website sudah di-deploy ke Cloudflare Pages oleh pemilik repo. Website menampilkan **hasil batch** dari rekaman tersimpan: bukan pemantauan waktu nyata dan bukan pemeliharaan prediktif. Reproduksi di Kaggle belum dijalankan (lihat bagian Status).
 
 ![Konsol pemantauan](docs/screenshots/konsol-1440-gelap.png)
+
+| Ringkasan (desktop) | Kinerja (tema terang) | Konsol (ponsel) |
+|---|---|---|
+| ![Ringkasan](docs/screenshots/ringkasan-1440-gelap.png) | ![Kinerja](docs/screenshots/kinerja-1440-terang.png) | ![Konsol di ponsel](docs/screenshots/konsol-375-gelap.png) |
 
 ## Yang dikerjakan
 
@@ -74,13 +80,15 @@ Detail ada di [docs/REPRODUCE.md](docs/REPRODUCE.md). Data dan model dijelaskan 
 ## Kualitas
 
 - Python: pytest (tes sintetis, tes data asli, tes reproduksi hasil), ruff, CI di Python 3.11 dan 3.13, pip-audit.
-- Website: tes paritas alarm browser terhadap hasil Python untuk 60 konfigurasi, tes e2e Playwright di 320, 375, 768, dan 1440 piksel, pemeriksaan aksesibilitas axe (WCAG 2 AA), CSP ketat, tanpa permintaan pihak ketiga.
+- Website: tes paritas alarm browser terhadap hasil Python untuk 60 konfigurasi, tes e2e Playwright di 320, 375, 768, dan 1440 piksel (tema gelap dan terang, juga dengan CPU diperlambat 4 kali), pemeriksaan aksesibilitas axe (WCAG 2 AA), CSP ketat, tanpa permintaan pihak ketiga, npm audit.
+- Pemeriksaan independen: `python tools/verify_published.py` menghitung ulang semua angka website dari CSV SKAB mentah tanpa memakai modul metrik proyek, lalu memeriksa pembagian data (uji selalu rekaman terbaru per sesi, kalibrasi tanpa label anomali). Dijalankan di CI.
 
 ## Status dan batasan yang jujur
 
 - Hasil dihitung di sesi pengembangan (CPU). Notebook Kaggle ada di `notebooks/kaggle_train.ipynb`, tetapi **belum dijalankan di Kaggle** karena Kaggle tidak dapat dijangkau dari sesi ini. Notebook membandingkan hasilnya dengan `reports/results.json`.
 - Website menampilkan **hasil batch**, bukan inferensi langsung. Yang dihitung ulang di browser hanya aturan alarm (ambang, ketekunan, penahanan) dari skor tersimpan.
-- Deploy Cloudflare Pages belum dilakukan. Panduan ada di [docs/DEPLOY_CLOUDFLARE.md](docs/DEPLOY_CLOUDFLARE.md).
+- Website di-deploy ke Cloudflare Pages oleh pemilik repo di https://industrial-sensor-sentinel.pages.dev/. Sesi pengembangan tidak dapat membuka domain pages.dev, jadi pemeriksaan visual dan e2e dilakukan pada salinan lokal folder `web/public` yang sama. Panduan dan cara memperbaiki status integrasi Git ada di [docs/DEPLOY_CLOUDFLARE.md](docs/DEPLOY_CLOUDFLARE.md).
+- Hasil uji sempat dilihat selama pengembangan. Setelah itu definisi alarm diperketat (alarm yang sudah menyala sebelum kejadian dihitung palsu) dan rentang ambang diperluas. Tidak ada parameter yang dipilih memakai rekaman uji. Rinciannya di [Model Card](docs/MODEL_CARD.md).
 - Lihat bagian Keterbatasan di [Model Card](docs/MODEL_CARD.md).
 
 ## Lisensi
