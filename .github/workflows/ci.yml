@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check .
+      - name: Format check
+        run: ruff format --check .
+      - name: Unduh dan verifikasi data SKAB
+        run: sentinel data fetch
+      - name: Tes (termasuk tes data asli dan reproduksi hasil)
+        run: pytest --cov=sentinel --cov-report=term-missing
+
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Pasang dependensi
+        working-directory: web
+        run: npm ci
+      - name: Tes logika (paritas dengan hasil Python)
+        working-directory: web
+        run: npm test
+      - name: Periksa build statis
+        working-directory: web
+        run: npm run build
+      - name: Pasang Chromium
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+      - name: Tes e2e, responsivitas, aksesibilitas
+        working-directory: web
+        run: SHOT_DIR=$RUNNER_TEMP/screenshots npm run e2e
+      - name: Audit dependensi npm
+        working-directory: web
+        run: npm audit --audit-level=high
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
+          path: ${{ runner.temp }}/screenshots
+          retention-days: 7
+
+  dependency-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Audit dependensi
+        run: |
+          pip install pip-audit
+          pip-audit .
