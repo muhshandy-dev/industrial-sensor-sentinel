@@ -24,6 +24,18 @@ Website statis tanpa build. Yang dipublikasikan adalah folder `web/public`.
 - Produksi: https://industrial-sensor-sentinel.pages.dev/ (di-deploy oleh pemilik repo dari branch `main`).
 - Sesi pengembangan tidak dapat membuka domain `pages.dev`, jadi isi situs live diperiksa oleh pemilik repo. Isi folder `web/public` di `main` adalah yang diuji e2e di CI.
 
+## Status integrasi yang teramati (24 Oktober 2026)
+
+- Pada PR #2, check **Cloudflare Pages** berhasil dan bot Cloudflare memasang URL preview. Artinya integrasi Git proyek Pages `industrial-sensor-sentinel` tersambung dan deploy otomatis berjalan.
+- Ada check lain, **Workers Builds: industrial-sensor-sentinel**, yang gagal dengan pesan "This Worker does not exist on your account". Ini berasal dari koneksi build milik sebuah *Worker* (bukan proyek Pages) bernama sama yang sudah tidak ada. Check ini tidak memengaruhi situs Pages, tetapi membuat tanda silang merah pada setiap commit.
+
+Cara menghilangkan check Workers Builds yang gagal, tanpa menyentuh proyek Pages:
+
+1. Cloudflare: Workers and Pages. Cari entri bertipe **Worker** bernama `industrial-sensor-sentinel` (ikon dan label berbeda dari proyek Pages).
+2. Bila ada: buka, Settings, Build, lalu Disconnect pada bagian Git repository. Worker kosong itu boleh dihapus bila memang tidak dipakai. Jangan hapus proyek Pages.
+3. Bila tidak ada, koneksi build lama tertinggal tanpa Worker. Buat sementara Worker bernama `industrial-sensor-sentinel` dari template Hello World, buka Settings, Build, Disconnect, lalu hapus Worker itu.
+4. Jangan mencabut akses aplikasi Cloudflare di GitHub, karena aplikasi yang sama dipakai oleh proyek Pages.
+
 ## Bila integrasi GitHub berstatus "disconnected"
 
 Peringatan ini biasanya berarti aplikasi GitHub milik Cloudflare tidak lagi punya akses ke repo. Akibatnya push ke `main` tidak memicu deploy baru, walau situs lama tetap tampil. Perbaiki tanpa membuat proyek baru:
