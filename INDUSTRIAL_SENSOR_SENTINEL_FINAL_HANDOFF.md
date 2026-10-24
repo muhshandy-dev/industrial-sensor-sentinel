@@ -18,7 +18,7 @@ Industrial Sensor Sentinel mendeteksi anomali pada 8 sensor pompa air dari datas
 | Metrik, bootstrap, perbandingan berpasangan | Selesai |
 | Analisis kesalahan | Selesai |
 | Website (5 halaman, pemutar, grafik interaktif) | Selesai |
-| Pengujian otomatis dan CI | Selesai lokal; CI PR #5 menunggu hasil GitHub Actions |
+| Pengujian otomatis dan CI | Selesai; CI PR #5 hijau (5 dari 5 check, commit `0e22d8e`) |
 | Dokumentasi | Selesai |
 | Notebook Kaggle | Tersedia, **belum dijalankan di Kaggle** |
 | Deploy Cloudflare Pages | Dilakukan pemilik; **NOT VERIFIED** dari sesi ini |
@@ -46,7 +46,6 @@ Dijalankan di sesi pengembangan pada 24 Oktober 2026 (commit `6b4e072` dan perub
 - Pemeriksaan website publik di pages.dev (domain tidak dapat dijangkau dari sesi). Semua uji browser dilakukan pada salinan lokal `web/public` yang sama persis.
 - Uji di Safari dan Firefox asli; e2e memakai Chromium.
 - Uji pembaca layar manual; aksesibilitas diperiksa otomatis dengan axe (WCAG 2 AA) dan uji keyboard.
-- CI GitHub Actions untuk PR #5: menunggu hasil.
 
 ## D. Evaluasi ML
 
@@ -116,7 +115,7 @@ Diuji otomatis dalam e2e (178 pemeriksaan) dan rekaman video:
 | #2 | review produksi, pemeriksa independen | merged |
 | #3 | pemutar interaktif dan animasi | merged |
 | #4 | rombak desain dan perbaikan cache | merged |
-| #5 | finalisasi ini | draft, menunggu CI dan persetujuan Shandy |
+| #5 | finalisasi ini | draft, CI hijau (test 3.11, test 3.13, web, dependency-audit, Cloudflare Pages preview), tanpa konflik, menunggu persetujuan Shandy |
 
 ## J. Masalah yang diperbaiki di tahap ini
 
@@ -161,6 +160,6 @@ Diuji otomatis dalam e2e (178 pemeriksaan) dan rekaman video:
 
 Alasan PASS: semua pengujian lokal lulus dengan hitungan nyata, evaluasi bisa direproduksi identik, tidak ada kebocoran yang ditemukan, angka website cocok dengan eksperimen, dan klaim di website jujur (pemutaran rekaman, bukan pemantauan langsung).
 
-Alasan WITH ISSUES: website publik belum diverifikasi langsung, notebook belum dijalankan di Kaggle, dan PR #5 masih menunggu CI dan persetujuan merge.
+Alasan WITH ISSUES: website publik belum diverifikasi langsung, notebook belum dijalankan di Kaggle, dan PR #5 masih menunggu persetujuan merge.
 
-Langkah untuk menutup: (1) Shandy menyetujui merge PR #5; (2) setelah merge, Shandy membuka website dan memeriksa daftar di `docs/DEPLOY_CLOUDFLARE.md`; (3) opsional, jalankan notebook di Kaggle.
+Langkah untuk menutup: (1) Shandy menyetujui merge PR #5 (preview Cloudflare cabang ini sudah berhasil dibangun); (2) setelah merge, Shandy membuka website dan memeriksa daftar di `docs/DEPLOY_CLOUDFLARE.md`; (3) opsional, jalankan notebook di Kaggle.
